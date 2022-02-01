@@ -23,57 +23,69 @@ var templateCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		t, token, err := template.TemplateDefinition(args[0])
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to retrieve template definition: %v\n", err)
-			os.Exit(1)
-		}
+		retrieve(cmd, args[0])
 
-		dir, _ := cmd.Flags().GetString("destination")
-		if dir == "" {
-			dir = t.Name
-		} else {
-			dir = filepath.Join(dir, t.Name)
-		}
-
-		err = os.MkdirAll(dir, 0755)
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to create directory: %v\n", err)
-			os.Exit(1)
-		}
-
-		for _, f := range t.Files {
-			b, err := dl.Download(t.Url+f, token)
-			if err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "failed to download file '%s': %v\n", f, err)
-				os.Exit(1)
-			}
-
-			filename := filepath.Join(dir, f)
-			err = ioutil.WriteFile(filename, b, 0755)
-			if err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "failed to write file '%s': %v\n", filename, err)
-				os.Exit(1)
-			}
-		}
-
-		if t.Commands != "" {
-			cmd := exec.Command(t.Commands)
-			cc := strings.Split(t.Commands, " ")
-			if len(cc) > 1 {
-				cmd = exec.Command(cc[0], cc[1:len(cc)]...)
-			}
-
-			cmd.Stdout = os.Stdout
-			cmd.Stderr = os.Stderr
-
-			err := cmd.Run()
-			if err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "failed to execute after retrieval command '%s': %v\n", t.Commands, err)
-				os.Exit(1)
-			}
-		}
 	},
+}
+
+func retrieve(cmd *cobra.Command, templateName string) {
+	temp, token, err := template.TemplateDefinition(templateName)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "failed to retrieve template definition: %v\n", err)
+		os.Exit(1)
+	}
+	dir, _ := cmd.Flags().GetString("destination")
+	if dir == "" {
+		dir = temp.Name
+	} else {
+		dir = filepath.Join(dir, temp.Name)
+	}
+
+	// todo: check cyclical dependencies
+	if len(temp.Dependencies) != 0 {
+		for _, tn := range temp.Dependencies {
+			retrieve(cmd, tn)
+		}
+	}
+
+	err = os.MkdirAll(dir, 0755)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "failed to create directory: %v\n", err)
+		os.Exit(1)
+	}
+
+	for _, f := range temp.Files {
+		b, err := dl.Download(temp.Url+f, token)
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "failed to download file '%s': %v\n", f, err)
+			os.Exit(1)
+		}
+
+		filename := filepath.Join(dir, f)
+		err = ioutil.WriteFile(filename, b, 0755)
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "failed to write file '%s': %v\n", filename, err)
+			os.Exit(1)
+		}
+	}
+
+	if temp.Commands != "" {
+		cmd := exec.Command(temp.Commands)
+		cc := strings.Split(temp.Commands, " ")
+		if len(cc) > 1 {
+			cmd = exec.Command(cc[0], cc[1:len(cc)]...)
+		}
+
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+		err := cmd.Run()
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "failed to execute after retrieval command '%s': %v\n",
+				temp.Commands, err)
+			os.Exit(1)
+		}
+	}
 }
 
 func init() {
