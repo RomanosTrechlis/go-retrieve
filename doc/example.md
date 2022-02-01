@@ -1,3 +1,5 @@
+### Example use case
+
 In this example, we use **retemp** to retrieve typescript code templates for a brand-new React application.
 
 This is not a follow along tutorial, but an actual use case from our daily work life.
@@ -48,3 +50,20 @@ We can, clearly, see the *breadcrumb* component in the specified directory
 containing the corresponding typescript files.
 
 This component is now ready to use in the React application.
+
+### Component with dependencies
+
+A more complex example is when a component has a dependency on another component, like the *portlet* typescript
+component. In this case, **retemp** retrieves the dependencies first before retrieving the requested component.
+
+```bash
+retemp template portlet -d src/components
+```
+
+Again, we retrieve the *portlet* component to the *src/components* directory. 
+In the following image we can clearly see that the *placeholder* typescript component 
+has been retrieved as well.
+
+![](images/final_project_structure.png)
+
+The *portlet* component is ready to be used.
