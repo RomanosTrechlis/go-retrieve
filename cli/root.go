@@ -14,7 +14,7 @@ var rootCmd = &cobra.Command{
 copies them to current directory. 
 
 Used mainly for bootstraping software projects, 
-adding modules or components to an existing projects, 
+adding modules or components to an existing project, 
 or just copying resources from remote locations.
 
 First, run the 'init' command to create the required
