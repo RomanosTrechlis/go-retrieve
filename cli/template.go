@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 // templateCmd represents the template command
@@ -58,6 +59,14 @@ var templateCmd = &cobra.Command{
 
 		if t.Commands != "" {
 			cmd := exec.Command(t.Commands)
+			cc := strings.Split(t.Commands, " ")
+			if len(cc) > 1 {
+				cmd = exec.Command(cc[0], cc[1:len(cc)]...)
+			}
+
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+
 			err := cmd.Run()
 			if err != nil {
 				_, _ = fmt.Fprintf(os.Stderr, "failed to execute after retrieval command '%s': %v\n", t.Commands, err)
