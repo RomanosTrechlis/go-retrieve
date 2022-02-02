@@ -12,5 +12,5 @@ func Destroy(e *env.ConfigEnv) error {
 		return fmt.Errorf("configuration file doesn't exist, 'destroy' option is not valid")
 	}
 
-	return os.RemoveAll(configFile)
+	return os.RemoveAll(e.ConfigPath())
 }

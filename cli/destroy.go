@@ -22,7 +22,7 @@ func executeDestroy(e *env.ConfigEnv) {
 	err := config.Destroy(e)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to destroy environment: %v\n", err)
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 }
 
