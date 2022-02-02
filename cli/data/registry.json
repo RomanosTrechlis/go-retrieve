@@ -1,0 +1,36 @@
+{
+  "name": "registry",
+  "protocol": 1,
+  "templates": [
+    {
+      "name": "breadcrumb",
+      "url": "",
+      "dependencies": [],
+      "commands": "yarn add react-router-dom",
+      "files": [
+        "Breadcrumb.tsx",
+        "BreadcrumbItem.tsx"
+      ]
+    },
+    {
+      "name": "placeholder",
+      "url": "",
+      "dependencies": [],
+      "commands": "",
+      "files": [
+        "Placeholder.tsx"
+      ]
+    },
+    {
+      "name": "portlet",
+      "url": "",
+      "dependencies": [
+        "placeholder"
+      ],
+      "commands": "",
+      "files": [
+        "Portlet.tsx"
+      ]
+    }
+  ]
+}

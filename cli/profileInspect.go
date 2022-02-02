@@ -3,8 +3,9 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RomanosTrechlis/retemp/config"
-	"github.com/RomanosTrechlis/retemp/util"
+	"github.com/RomanosTrechlis/go-retrieve/config"
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/util"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
 	"os"
@@ -16,36 +17,41 @@ var inspectCmd = &cobra.Command{
 	Short: "Display the configuration of specific profile",
 	Long:  `Display the configuration of specific profile`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			_, _ = fmt.Fprintf(os.Stderr, "provide at least one profile to inspect\n")
-			os.Exit(1)
-		}
-
-		c, err := config.LoadConfig()
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
-			os.Exit(1)
-		}
-
-		isFirst := true
-		for _, p := range c.Profiles {
-			if !util.Contains(args, p.Name) {
-				continue
-			}
-
-			if !isFirst {
-				isFirst = false
-				fmt.Printf("------------- %s -----------\n", p.Name)
-			}
-
-			if d, _ := cmd.Flags().GetBool("dump"); d {
-				spew.Dump(p)
-				os.Exit(0)
-			}
-			s, _ := json.MarshalIndent(p, "", "  ")
-			fmt.Println(string(s))
-		}
+		dump, _ := cmd.Flags().GetBool("dump")
+		executeProfileInspect(env.DefaultConfigEnv(), args, dump)
 	},
+}
+
+func executeProfileInspect(e *env.ConfigEnv, args []string, dump bool) {
+	if len(args) == 0 {
+		_, _ = fmt.Fprintf(os.Stderr, "provide at least one profile to inspect\n")
+		os.Exit(1)
+	}
+
+	c, err := config.LoadConfig(e)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
+		os.Exit(1)
+	}
+
+	isFirst := true
+	for _, p := range c.Profiles {
+		if !util.Contains(args, p.Name) {
+			continue
+		}
+
+		if !isFirst {
+			isFirst = false
+			fmt.Printf("------------- %s -----------\n", p.Name)
+		}
+
+		if dump {
+			spew.Fdump(e.Writer(), p)
+			return
+		}
+		s, _ := json.MarshalIndent(p, "", "  ")
+		fmt.Println(string(s))
+	}
 }
 
 func init() {

@@ -2,14 +2,12 @@ package config
 
 import (
 	"fmt"
+	"github.com/RomanosTrechlis/go-retrieve/env"
 	"os"
-	"path"
 )
 
-func Destroy() error {
-	dirname, _ := os.UserHomeDir()
-	configPath := path.Join(dirname, ".retemp")
-	configFile := path.Join(configPath, "config.json")
+func Destroy(e *env.ConfigEnv) error {
+	configFile := e.ConfigFilePath()
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
 		return fmt.Errorf("configuration file doesn't exist, 'destroy' option is not valid")
 	}

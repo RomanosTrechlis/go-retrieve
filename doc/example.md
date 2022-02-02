@@ -1,6 +1,6 @@
 ### Example use case
 
-In this example, we use **retemp** to retrieve typescript code templates for a brand-new React application.
+In this example, we use **go-retrieve** to retrieve typescript code templates for a brand-new React application.
 
 This is not a follow along tutorial, but an actual use case from our daily work life.
 
@@ -9,7 +9,7 @@ This is not a follow along tutorial, but an actual use case from our daily work 
 We execute the following command to create an empty React typescript project.
 
 ```bash
-yarn create react-app retemp-example --template typescript
+yarn create react-app go-retrieve-example --template typescript
 ```
 
 After the execution of the command we have the following project structure.
@@ -18,12 +18,12 @@ After the execution of the command we have the following project structure.
 
 ### Retrieving template
 
-We already have initialized **retemp** and created the necessary registry files.
+We already have initialized **go-retrieve** and created the necessary registry files.
 
-This is the template list configured with **retemp**.
+This is the template list configured with **go-retrieve**.
 
 ```bash
-retemp template list
+go-retrieve template list
 ```
 
 ![](images/template_list.png)
@@ -31,7 +31,7 @@ retemp template list
 We execute the following command to retrieve the *breadcrumb* template component.
 
 ```bash
-retemp template breadcrumb -d src/components
+go-retrieve template breadcrumb -d src/components
 ```
 
 The flag *-d* puts the retrieved component to the specific directory.
@@ -54,10 +54,10 @@ This component is now ready to use in the React application.
 ### Component with dependencies
 
 A more complex example is when a component has a dependency on another component, like the *portlet* typescript
-component. In this case, **retemp** retrieves the dependencies first before retrieving the requested component.
+component. In this case, **go-retrieve** retrieves the dependencies first before retrieving the requested component.
 
 ```bash
-retemp template portlet -d src/components
+go-retrieve template portlet -d src/components
 ```
 
 Again, we retrieve the *portlet* component to the *src/components* directory. 

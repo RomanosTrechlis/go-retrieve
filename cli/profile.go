@@ -2,7 +2,8 @@ package cli
 
 import (
 	"fmt"
-	"github.com/RomanosTrechlis/retemp/config"
+	"github.com/RomanosTrechlis/go-retrieve/config"
+	"github.com/RomanosTrechlis/go-retrieve/env"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -16,43 +17,47 @@ var profileCmd = &cobra.Command{
 
 Additionally, you can inspect a specific profile.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		c, err := config.LoadConfig()
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
-			os.Exit(1)
-		}
-
-		if len(args) > 1 {
-			_, _ = fmt.Fprintf(os.Stderr, "too many arguments received: %v", args)
-			os.Exit(1)
-		}
-
-		if len(args) == 1 {
-			err = updateActive(c, args[0])
-			if err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "failed to update active profile: %v\n", err)
-				os.Exit(1)
-			}
-			os.Exit(0)
-		}
-
-		if c.Active == nil && len(c.Profiles) == 1 {
-			err = updateActive(c, c.Profiles[0].Name)
-			if err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "failed to update active profile: %v\n", err)
-				os.Exit(1)
-			}
-		}
-
-		displayActive(c)
+		executeProfile(env.DefaultConfigEnv(), args)
 	},
 }
 
-func updateActive(c *config.Configuration, profile string) error {
+func executeProfile(e *env.ConfigEnv, args []string) {
+	c, err := config.LoadConfig(e)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
+		os.Exit(1)
+	}
+
+	if len(args) > 1 {
+		_, _ = fmt.Fprintf(os.Stderr, "too many arguments received: %v", args)
+		os.Exit(1)
+	}
+
+	if len(args) == 1 {
+		err = updateActive(e, c, args[0])
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "failed to update active profile: %v\n", err)
+			os.Exit(1)
+		}
+		return
+	}
+
+	if c.Active == nil && len(c.Profiles) == 1 {
+		err = updateActive(e, c, c.Profiles[0].Name)
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "failed to update active profile: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
+	displayActive(c)
+}
+
+func updateActive(e *env.ConfigEnv, c *config.Configuration, profile string) error {
 	for _, p := range c.Profiles {
 		if p.Name == profile {
 			c.Active = p
-			return config.UpdateConfig(c)
+			return config.UpdateConfig(e, c)
 		}
 	}
 	return fmt.Errorf("failed to find profile '%s' in the configuration", profile)

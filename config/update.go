@@ -1,7 +1,10 @@
 package config
 
-import "github.com/RomanosTrechlis/retemp/util"
+import (
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/util"
+)
 
-func UpdateConfig(c *Configuration) error {
-	return util.WriteFile(util.ConfigPath(), "config.json", c)
+func UpdateConfig(e *env.ConfigEnv, c *Configuration) error {
+	return util.WriteFile(e.ConfigPath(), e.ConfigName, c)
 }

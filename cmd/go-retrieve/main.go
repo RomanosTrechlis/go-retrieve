@@ -1,6 +1,6 @@
 package main
 
-import "github.com/RomanosTrechlis/retemp/cli"
+import "github.com/RomanosTrechlis/go-retrieve/cli"
 
 func main() {
 	// init: create config file holding profiles and sources

@@ -61,13 +61,3 @@ func CSVToArray(csv string) []string {
 	}
 	return arr
 }
-
-func ConfigPath() string {
-	dirname, _ := os.UserHomeDir()
-	return path.Join(dirname, ".retemp")
-}
-
-func ConfigFilePath() string {
-	dirname, _ := os.UserHomeDir()
-	return path.Join(dirname, ".retemp", "config.json")
-}

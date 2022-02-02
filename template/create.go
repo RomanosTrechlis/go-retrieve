@@ -3,8 +3,8 @@ package template
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RomanosTrechlis/retemp/registry"
-	"github.com/RomanosTrechlis/retemp/util"
+	"github.com/RomanosTrechlis/go-retrieve/registry"
+	"github.com/RomanosTrechlis/go-retrieve/util"
 	"os"
 	"path/filepath"
 	"strings"

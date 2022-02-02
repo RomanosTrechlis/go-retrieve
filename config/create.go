@@ -3,25 +3,26 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RomanosTrechlis/retemp/util"
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/util"
 	"io/ioutil"
 	"os"
 	"path"
 )
 
-func ReInit(filename string, overwrite bool) error {
+func ReInit(e *env.ConfigEnv, filename string, overwrite bool) error {
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return fmt.Errorf("failed to read file '%s': %v", filename, err)
 	}
 
 	var c *Configuration
-	err = json.Unmarshal(b, c)
+	err = json.Unmarshal(b, &c)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal config file: %v", err)
 	}
 
-	configFile := path.Join(util.ConfigPath(), "config.json")
+	configFile := path.Join(e.ConfigPath(), e.ConfigName)
 	if _, err := os.Stat(configFile); err == nil {
 		if !overwrite {
 			return fmt.Errorf("configuration file already exists, 'init' option is not valid")
@@ -32,19 +33,15 @@ func ReInit(filename string, overwrite bool) error {
 		}
 	}
 
-	err = util.WriteFile(util.ConfigPath(), "config.json", c)
+	err = util.WriteFile(e.ConfigPath(), e.ConfigName, c)
 	if err != nil {
 		return fmt.Errorf("failed to write config file: %v", err)
 	}
 	return nil
 }
 
-func Init() error {
-	dirname, _ := os.UserHomeDir()
-	configPath := path.Join(dirname, ".retemp")
-	filename := "config.json"
-	configFile := path.Join(configPath, filename)
-	if _, err := os.Stat(configFile); err == nil {
+func Init(e *env.ConfigEnv) error {
+	if _, err := os.Stat(e.ConfigFilePath()); err == nil {
 		return fmt.Errorf("configuration file already exists, 'init' option is not valid")
 	}
 
@@ -56,7 +53,7 @@ func Init() error {
 
 	configuration := &Configuration{nil, profiles}
 
-	return util.WriteFile(configPath, filename, &configuration)
+	return util.WriteFile(e.ConfigPath(), e.ConfigName, &configuration)
 }
 
 func createProfiles() ([]*ConfigurationProfile, error) {

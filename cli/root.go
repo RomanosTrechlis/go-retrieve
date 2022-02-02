@@ -8,7 +8,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "retemp",
+	Use:   "go-retrieve",
 	Short: "Retrieves templates from remote or local locations",
 	Long: `Retrieves templates from remote or local locations and
 copies them to current directory. 

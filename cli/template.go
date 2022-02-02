@@ -2,8 +2,9 @@ package cli
 
 import (
 	"fmt"
-	"github.com/RomanosTrechlis/retemp/dl"
-	"github.com/RomanosTrechlis/retemp/template"
+	"github.com/RomanosTrechlis/go-retrieve/dl"
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/template"
 	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"
@@ -22,29 +23,29 @@ var templateCmd = &cobra.Command{
 			_, _ = fmt.Fprintf(os.Stderr, "please provide a template name\n")
 			os.Exit(1)
 		}
+		dir, _ := cmd.Flags().GetString("destination")
 
-		retrieve(cmd, args[0])
-
+		executeTemplate(env.DefaultConfigEnv(), dir, args[0])
 	},
 }
 
-func retrieve(cmd *cobra.Command, templateName string) {
-	temp, token, err := template.TemplateDefinition(templateName)
+func executeTemplate(e *env.ConfigEnv, destination, templateName string) {
+	temp, token, err := template.TemplateDefinition(e, templateName)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to retrieve template definition: %v\n", err)
 		os.Exit(1)
 	}
-	dir, _ := cmd.Flags().GetString("destination")
-	if dir == "" {
+	dir := ""
+	if destination == "" {
 		dir = temp.Name
 	} else {
-		dir = filepath.Join(dir, temp.Name)
+		dir = filepath.Join(destination, temp.Name)
 	}
 
 	// todo: check cyclical dependencies
 	if len(temp.Dependencies) != 0 {
 		for _, tn := range temp.Dependencies {
-			retrieve(cmd, tn)
+			executeTemplate(e, destination, tn)
 		}
 	}
 

@@ -3,14 +3,15 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RomanosTrechlis/retemp/util"
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/util"
 	"io/ioutil"
 )
 
-func LoadConfig() (*Configuration, error) {
-	configFile := util.ConfigFilePath()
+func LoadConfig(e *env.ConfigEnv) (*Configuration, error) {
+	configFile := e.ConfigFilePath()
 	if !util.IsExists(configFile) {
-		return nil, fmt.Errorf("coundn't find configuration file, run 'init' command first")
+		return nil, fmt.Errorf("couldn't find configuration file, run 'init' command first")
 	}
 
 	b, err := ioutil.ReadFile(configFile)

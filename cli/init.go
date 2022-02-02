@@ -2,7 +2,8 @@ package cli
 
 import (
 	"fmt"
-	"github.com/RomanosTrechlis/retemp/config"
+	"github.com/RomanosTrechlis/go-retrieve/config"
+	"github.com/RomanosTrechlis/go-retrieve/env"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -10,28 +11,33 @@ import (
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Execute wizard to initialize the retemp",
-	Long: `Execute wizard to initialize the retemp.
+	Short: "Execute wizard to initialize the go-retrieve",
+	Long: `Execute wizard to initialize the go-retrieve.
 
 Follow the steps on the terminal to create profiles and
 sources. You can reinstate an existing configuration file.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		filename, _ := cmd.Flags().GetString("filename")
-		if filename != "" {
-			overwrite, _ := cmd.Flags().GetBool("overwrite")
-			err := config.ReInit(filename, overwrite)
-			if err != nil {
-				_, _ = fmt.Fprintf(os.Stderr, "failed to re-initialize: %v\n", err)
-				os.Exit(1)
-			}
-		}
-
-		err := config.Init()
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to initialize: %v\n", err)
-			os.Exit(1)
-		}
+		e := env.DefaultConfigEnv()
+		f, _ := cmd.Flags().GetString("filename")
+		o, _ := cmd.Flags().GetBool("overwrite")
+		executeInit(e, f, o)
 	},
+}
+
+func executeInit(e *env.ConfigEnv, filename string, overwrite bool) {
+	if filename != "" {
+		err := config.ReInit(e, filename, overwrite)
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "failed to re-initialize: %v\n", err)
+			nonZeroExit(1)
+		}
+	}
+
+	err := config.Init(e)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "failed to initialize: %v\n", err)
+		nonZeroExit(1)
+	}
 }
 
 func init() {

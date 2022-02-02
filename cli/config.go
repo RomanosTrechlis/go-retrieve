@@ -3,7 +3,8 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RomanosTrechlis/retemp/config"
+	"github.com/RomanosTrechlis/go-retrieve/config"
+	"github.com/RomanosTrechlis/go-retrieve/env"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
 	"os"
@@ -15,19 +16,28 @@ var configCmd = &cobra.Command{
 	Short: "Displays the configuration file",
 	Long:  `Displays the content of the configuration file if it exists`,
 	Run: func(cmd *cobra.Command, args []string) {
-		c, err := config.LoadConfig()
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
-			os.Exit(1)
-		}
-
-		if d, _ := cmd.Flags().GetBool("dump"); d {
-			spew.Dump(c)
-			os.Exit(0)
-		}
-		s, _ := json.MarshalIndent(c, "", "  ")
-		fmt.Println(string(s))
+		e := env.DefaultConfigEnv()
+		d, _ := cmd.Flags().GetBool("dump")
+		executeConfig(e, d)
 	},
+}
+
+func executeConfig(e *env.ConfigEnv, dump bool) {
+	c, err := config.LoadConfig(e)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
+		nonZeroExit(1)
+		//os.Exit(1)
+		//panic(fmt.Sprintf("failed to load config: %v\n", err))
+	}
+
+	if dump {
+		spew.Fdump(e.Writer(), c)
+		return
+	}
+
+	s, _ := json.MarshalIndent(c, "", "  ")
+	_, _ = fmt.Fprintln(e.Writer(), string(s))
 }
 
 func init() {

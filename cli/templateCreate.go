@@ -2,7 +2,7 @@ package cli
 
 import (
 	"fmt"
-	"github.com/RomanosTrechlis/retemp/template"
+	"github.com/RomanosTrechlis/go-retrieve/template"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -18,26 +18,21 @@ var createCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// todo: upload functionality?
-		e, _ := cmd.Flags().GetString("exclude")
-		err := template.CreateTemplateConfig(args[0], e)
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to create template: %v", err)
-			os.Exit(1)
-		}
+		ex, _ := cmd.Flags().GetString("exclude")
+		executeCreate(args[0], ex)
 	},
+}
+
+func executeCreate(templateName, ex string) {
+	// todo: upload functionality?
+	err := template.CreateTemplateConfig(templateName, ex)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "failed to create template: %v", err)
+		os.Exit(1)
+	}
 }
 
 func init() {
 	templateCmd.AddCommand(createCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// createCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
 	createCmd.Flags().StringP("exclude", "e", "", "List of directories to exclude (CSV)")
 }

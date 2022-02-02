@@ -1,0 +1,24 @@
+{
+ "active": {
+  "name": "github",
+  "sources": [
+   {
+    "name": "registry",
+    "url": "URL",
+    "token": "RETEMP_TOKEN"
+   }
+  ]
+ },
+ "profiles": [
+  {
+   "name": "github",
+   "sources": [
+    {
+     "name": "registry",
+     "url": "URL",
+     "token": "RETEMP_TOKEN"
+    }
+   ]
+  }
+ ]
+}
