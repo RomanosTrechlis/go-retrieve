@@ -56,5 +56,5 @@ jobs:
 
       - name: Run vet & lint
         run: |
-          go vet .
-          golint .
+          go vet ./...
+          golint ./...
