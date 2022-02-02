@@ -5,11 +5,11 @@ on:
     branches:
       - master
   pull_request:
-   git stat branches:
+    branches:
       - master
 
 jobs:
-  pre-commit:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
