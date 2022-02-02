@@ -1,5 +1,7 @@
 # *go-retrieve*: retrieve templates
 
+[![build](https://github.com/RomanosTrechlis/go-retrieve/workflows/build/badge.svg)](https://github.com/RomanosTrechlis/go-retrieve/actions?query=workflow%3Abuild)
+
 Retrieves templates from remote or local locations and copies them to current directory.
 
 Used mainly for bootstrapping software projects, adding modules or components to an existing project, 
