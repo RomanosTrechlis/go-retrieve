@@ -48,6 +48,12 @@ jobs:
         with:
           filename: coverage.out
 
+      - name: Verify Changed files
+        uses: tj-actions/verify-changed-files@v8.1
+        id: verify-changed-files
+        with:
+          files: README.md
+
       - name: Run build
         run: |
           cd cmd/go-retrieve
