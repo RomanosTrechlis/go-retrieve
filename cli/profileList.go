@@ -23,11 +23,11 @@ func executeProfileList(e *env.ConfigEnv) {
 	c, err := config.LoadConfig(e)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 
 	for _, p := range c.Profiles {
-		fmt.Println(p.Name)
+		_, _ = fmt.Fprintln(e.Writer(), p.Name)
 	}
 }
 

@@ -30,7 +30,7 @@ func executeTemplateList(e *env.ConfigEnv, dump bool, args []string) {
 		err := template.List(e)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "failed to list template definitions: %v", err)
-			os.Exit(1)
+			nonZeroExit(1)
 		}
 		return
 	}
@@ -38,7 +38,7 @@ func executeTemplateList(e *env.ConfigEnv, dump bool, args []string) {
 	t, _, err := template.TemplateDefinition(e, args[0])
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to retrieve template definition: %v\n", err)
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 
 	if dump {
@@ -46,7 +46,7 @@ func executeTemplateList(e *env.ConfigEnv, dump bool, args []string) {
 		return
 	}
 	s, _ := json.MarshalIndent(t, "", "  ")
-	fmt.Println(string(s))
+	_, _ = fmt.Fprintln(e.Writer(), string(s))
 }
 
 func init() {

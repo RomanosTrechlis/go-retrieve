@@ -8,7 +8,6 @@ import (
 )
 
 func Download(url string, tokenEnvVar string) ([]byte, error) {
-	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return nil, err
@@ -16,6 +15,8 @@ func Download(url string, tokenEnvVar string) ([]byte, error) {
 	if tokenEnvVar != "" {
 		req.Header.Set("Authorization", fmt.Sprintf("token %s", os.Getenv(tokenEnvVar)))
 	}
+
+	client := httpClient()
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -28,4 +29,15 @@ func Download(url string, tokenEnvVar string) ([]byte, error) {
 	}
 
 	return ioutil.ReadAll(resp.Body)
+}
+
+// HTTPClient interface
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
+var httpClient func() HTTPClient = createClient
+
+func createClient() HTTPClient {
+	return &http.Client{}
 }

@@ -15,7 +15,7 @@ var createCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			_, _ = fmt.Fprintf(os.Stderr, "please provide at least one directory or file\n")
-			os.Exit(1)
+			nonZeroExit(1)
 		}
 
 		ex, _ := cmd.Flags().GetString("exclude")
@@ -28,7 +28,7 @@ func executeCreate(templateName, ex string) {
 	err := template.CreateTemplateConfig(templateName, ex)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to create template: %v", err)
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 }
 

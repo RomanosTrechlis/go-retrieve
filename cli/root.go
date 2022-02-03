@@ -1,8 +1,6 @@
 package cli
 
 import (
-	"os"
-
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +27,7 @@ configuration files. Follow the steps of the wizard.`,
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 }
 

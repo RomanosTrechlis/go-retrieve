@@ -25,19 +25,19 @@ func executeProfile(e *env.ConfigEnv, args []string) {
 	c, err := config.LoadConfig(e)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 
 	if len(args) > 1 {
 		_, _ = fmt.Fprintf(os.Stderr, "too many arguments received: %v", args)
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 
 	if len(args) == 1 {
 		err = updateActive(e, c, args[0])
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "failed to update active profile: %v\n", err)
-			os.Exit(1)
+			nonZeroExit(1)
 		}
 		return
 	}
@@ -46,11 +46,11 @@ func executeProfile(e *env.ConfigEnv, args []string) {
 		err = updateActive(e, c, c.Profiles[0].Name)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "failed to update active profile: %v\n", err)
-			os.Exit(1)
+			nonZeroExit(1)
 		}
 	}
 
-	displayActive(c)
+	displayActive(e, c)
 }
 
 func updateActive(e *env.ConfigEnv, c *config.Configuration, profile string) error {
@@ -63,13 +63,13 @@ func updateActive(e *env.ConfigEnv, c *config.Configuration, profile string) err
 	return fmt.Errorf("failed to find profile '%s' in the configuration", profile)
 }
 
-func displayActive(c *config.Configuration) {
+func displayActive(e *env.ConfigEnv, c *config.Configuration) {
 	profile := "NOT SET"
 	if c.Active != nil {
 		profile = c.Active.Name
 	}
 
-	fmt.Printf("active profile: %s", profile)
+	_, _ = fmt.Fprintf(e.Writer(), "active profile: %s", profile)
 }
 
 func init() {

@@ -21,7 +21,7 @@ var templateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			_, _ = fmt.Fprintf(os.Stderr, "please provide a template name\n")
-			os.Exit(1)
+			nonZeroExit(1)
 		}
 		dir, _ := cmd.Flags().GetString("destination")
 
@@ -33,7 +33,7 @@ func executeTemplate(e *env.ConfigEnv, destination, templateName string) {
 	temp, token, err := template.TemplateDefinition(e, templateName)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to retrieve template definition: %v\n", err)
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 	dir := ""
 	if destination == "" {
@@ -52,21 +52,21 @@ func executeTemplate(e *env.ConfigEnv, destination, templateName string) {
 	err = os.MkdirAll(dir, 0755)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to create directory: %v\n", err)
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 
 	for _, f := range temp.Files {
 		b, err := dl.Download(temp.Url+f, token)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "failed to download file '%s': %v\n", f, err)
-			os.Exit(1)
+			nonZeroExit(1)
 		}
 
 		filename := filepath.Join(dir, f)
 		err = ioutil.WriteFile(filename, b, 0755)
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "failed to write file '%s': %v\n", filename, err)
-			os.Exit(1)
+			nonZeroExit(1)
 		}
 	}
 
@@ -84,21 +84,12 @@ func executeTemplate(e *env.ConfigEnv, destination, templateName string) {
 		if err != nil {
 			_, _ = fmt.Fprintf(os.Stderr, "failed to execute after retrieval command '%s': %v\n",
 				temp.Commands, err)
-			os.Exit(1)
+			nonZeroExit(1)
 		}
 	}
 }
 
 func init() {
 	rootCmd.AddCommand(templateCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// templateCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
 	templateCmd.Flags().StringP("destination", "d", "", "Download template to specific destination")
 }

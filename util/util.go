@@ -31,10 +31,8 @@ func Scan(prompt string) string {
 	prompt = strings.TrimRight(prompt, " ")
 	fmt.Printf(prompt + " ")
 	scanner := bufio.NewScanner(os.Stdin)
-	for scanner.Scan() {
-		return scanner.Text()
-	}
-	return ""
+	scanner.Scan()
+	return scanner.Text()
 }
 
 func IsExists(path string) bool {

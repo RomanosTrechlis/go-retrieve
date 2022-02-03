@@ -3,7 +3,7 @@ package env
 import (
 	"io"
 	"os"
-	"path"
+	"path/filepath"
 )
 
 type ConfigEnv struct {
@@ -26,11 +26,11 @@ func (c *ConfigEnv) ConfigPath() string {
 	if c.HomeDir == "" {
 		return c.ConfigDir
 	}
-	return path.Join(c.HomeDir, c.ConfigDir)
+	return filepath.Join(c.HomeDir, c.ConfigDir)
 }
 
 func (c *ConfigEnv) ConfigFilePath() string {
-	return path.Join(c.HomeDir, c.ConfigDir, c.ConfigName)
+	return filepath.Join(c.HomeDir, c.ConfigDir, c.ConfigName)
 }
 
 func (c *ConfigEnv) Writer() io.Writer {

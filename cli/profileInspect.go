@@ -25,13 +25,13 @@ var inspectCmd = &cobra.Command{
 func executeProfileInspect(e *env.ConfigEnv, args []string, dump bool) {
 	if len(args) == 0 {
 		_, _ = fmt.Fprintf(os.Stderr, "provide at least one profile to inspect\n")
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 
 	c, err := config.LoadConfig(e)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
-		os.Exit(1)
+		nonZeroExit(1)
 	}
 
 	isFirst := true
@@ -42,7 +42,7 @@ func executeProfileInspect(e *env.ConfigEnv, args []string, dump bool) {
 
 		if !isFirst {
 			isFirst = false
-			fmt.Printf("------------- %s -----------\n", p.Name)
+			_, _ = fmt.Fprintf(e.Writer(), "------------- %s -----------\n", p.Name)
 		}
 
 		if dump {
@@ -50,7 +50,7 @@ func executeProfileInspect(e *env.ConfigEnv, args []string, dump bool) {
 			return
 		}
 		s, _ := json.MarshalIndent(p, "", "  ")
-		fmt.Println(string(s))
+		_, _ = fmt.Fprintln(e.Writer(), string(s))
 	}
 }
 
