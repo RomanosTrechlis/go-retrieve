@@ -40,13 +40,13 @@ jobs:
 
       - name: Run tests
         run: |
-          go test ./... -covermode=count -coverprofile=coverage.out --tags=go${{ matrix.go }}
-          go tool cover -func=coverage.out -o=coverage.out
+          go test ./... -covermode=count -coverprofile=coverage
+#          go tool cover -func=coverage -o=coverage
 
       - name: Upload coverage
         uses: codecov/codecov-action@v1
         with:
-          file: coverage.out
+          file: ./coverage
           verbose: true
 
       - name: Run vet & lint

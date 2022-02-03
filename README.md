@@ -2,6 +2,7 @@
 
 [![build](https://github.com/RomanosTrechlis/go-retrieve/workflows/build/badge.svg)](https://github.com/RomanosTrechlis/go-retrieve/actions?query=workflow%3Abuild)
 [![tests](https://github.com/RomanosTrechlis/go-retrieve/workflows/tests/badge.svg)](https://github.com/RomanosTrechlis/go-retrieve/actions?query=workflow%3Atests)
+[![codecov](https://codecov.io/gh/RomanosTrechlis/go-retrieve/branch/master/graph/badge.svg?token=J7JU85YYF8)](https://codecov.io/gh/RomanosTrechlis/go-retrieve)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/RomanosTrechlis/go-retrieve/blob/master/LICENSE)
 
 Retrieves templates from remote or local locations and copies them to current directory.
