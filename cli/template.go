@@ -30,7 +30,7 @@ var templateCmd = &cobra.Command{
 }
 
 func executeTemplate(e *env.ConfigEnv, destination, templateName string) {
-	temp, token, err := template.TemplateDefinition(e, templateName)
+	temp, token, err := template.Definition(e, templateName)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to retrieve template definition: %v\n", err)
 		nonZeroExit(1)

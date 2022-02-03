@@ -7,6 +7,7 @@ import (
 	"os"
 )
 
+// Download returns the body of an HTTP response
 func Download(url string, tokenEnvVar string) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

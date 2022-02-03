@@ -10,8 +10,10 @@ import (
 	"strings"
 )
 
-func WriteFile(filePath, filename string, data interface{}) error {
-	file, err := json.MarshalIndent(data, "", " ")
+// WriteFile creates a file with the given filename at the given
+// filePath containing the json data passed in the parameter.
+func WriteFile(filePath, filename string, jsonData interface{}) error {
+	file, err := json.MarshalIndent(jsonData, "", " ")
 	if err != nil {
 		return err
 	}
@@ -27,6 +29,7 @@ func WriteFile(filePath, filename string, data interface{}) error {
 	return ioutil.WriteFile(configFile, file, 0755)
 }
 
+// Scan prints a prompt and wait for user input to return
 func Scan(prompt string) string {
 	prompt = strings.TrimRight(prompt, " ")
 	fmt.Printf(prompt + " ")
@@ -35,11 +38,13 @@ func Scan(prompt string) string {
 	return scanner.Text()
 }
 
+// IsExists checks for the existence of the given file or directory
 func IsExists(path string) bool {
 	_, err := os.Stat(path)
 	return !os.IsNotExist(err)
 }
 
+// Contains checks a string array for a specific string
 func Contains(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {
@@ -49,6 +54,7 @@ func Contains(s []string, e string) bool {
 	return false
 }
 
+// CSVToArray breaks a csv string to a string array
 func CSVToArray(csv string) []string {
 	if strings.Trim(csv, " ") == "" {
 		return []string{}

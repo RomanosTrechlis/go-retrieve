@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+// CreateTemplateConfig prints the section of the configuration necessary to define a template
+// given a specific path and, if necessary, paths to exclude
 func CreateTemplateConfig(path string, excludeCSV string) error {
 	name := util.Scan("What is the name of the template?")
 	cmd := util.Scan("What command should be executed after retrieving the template?")

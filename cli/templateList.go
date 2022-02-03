@@ -35,7 +35,7 @@ func executeTemplateList(e *env.ConfigEnv, dump bool, args []string) {
 		return
 	}
 
-	t, _, err := template.TemplateDefinition(e, args[0])
+	t, _, err := template.Definition(e, args[0])
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to retrieve template definition: %v\n", err)
 		nonZeroExit(1)

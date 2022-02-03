@@ -12,7 +12,8 @@ import (
 	"path/filepath"
 )
 
-func TemplateDefinition(e *env.ConfigEnv, templateName string) (*registry.RegisteredTemplate, string, error) {
+// Definition finds a registered template with the required token if exists on the local registry
+func Definition(e *env.ConfigEnv, templateName string) (*registry.RegisteredTemplate, string, error) {
 	// todo: if template name is not found locally run update to include now template definitions
 	c, err := config.LoadConfig(e)
 	if err != nil {
@@ -35,6 +36,7 @@ func TemplateDefinition(e *env.ConfigEnv, templateName string) (*registry.Regist
 	return nil, "", fmt.Errorf("template with name '%s' doesn't exist", templateName)
 }
 
+// List prints all the available templates defined in the configuration directory
 func List(e *env.ConfigEnv) error {
 	files := make([]string, 0)
 	err := filepath.Walk(e.ConfigPath(), templateWalk(files, e.ConfigName))
@@ -54,6 +56,7 @@ func List(e *env.ConfigEnv) error {
 	return err
 }
 
+// LoadRegistryFile finds a specific registry and returns it
 func LoadRegistryFile(file string) (*registry.Registry, error) {
 	if !util.IsExists(file) {
 		return nil, fmt.Errorf("couldn't find configuration file, run 'init' command first")
