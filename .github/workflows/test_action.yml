@@ -1,4 +1,4 @@
-name: build
+name: test
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         goversion: [ 1.17 ]
-        goos: [linux, windows]
+        goos: [linux]
         goarch: [amd64]
     steps:
       - uses: actions/checkout@v2
@@ -33,12 +33,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
+      - name: Install dependencies
+        run: |
+          go version
+          go get -u golang.org/x/lint/golint
+
       - name: Run tests
         run: |
-          go test ./...
+          go test ./... -covermode=count -coverprofile=coverage.out --tags=go${{ matrix.go }}
+          go tool cover -func=coverage.out -o=coverage.out
 
-      - name: Run build
+      - name: Upload coverage
+        uses: codecov/codecov-action@v1
+        with:
+          file: coverage.out
+          verbose: true
+
+      - name: Run vet & lint
         run: |
-          cd cmd/go-retrieve
-          go build .
-          cd ../..
+          go vet ./...
+          golint ./...
