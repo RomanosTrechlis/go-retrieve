@@ -1,7 +1,7 @@
 # *go-retrieve*: retrieve templates
 
 [![build](https://github.com/RomanosTrechlis/go-retrieve/workflows/build/badge.svg)](https://github.com/RomanosTrechlis/go-retrieve/actions?query=workflow%3Abuild)
-[![tests](https://github.com/RomanosTrechlis/go-retrieve/workflows/test/badge.svg)](https://github.com/RomanosTrechlis/go-retrieve/actions?query=workflow%3Atest)
+[![tests](https://github.com/RomanosTrechlis/go-retrieve/workflows/tests/badge.svg)](https://github.com/RomanosTrechlis/go-retrieve/actions?query=workflow%3Atests)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/RomanosTrechlis/go-retrieve/blob/master/LICENSE)
 
 Retrieves templates from remote or local locations and copies them to current directory.
