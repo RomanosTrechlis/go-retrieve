@@ -1,10 +1,12 @@
-### Example use case
+# Example use case
 
-In this example, we use **go-retrieve** to retrieve typescript code templates for a brand-new React application.
+In this example, we use **go-retrieve** to retrieve typescript code templates
+for a brand-new React application.
 
-This is not a follow along tutorial, but an actual use case from our daily work life.
+This is not a follow along tutorial, but an actual use case from our daily work
+life.
 
-### Initializing the project
+## Initializing the project
 
 We execute the following command to create an empty React typescript project.
 
@@ -16,9 +18,10 @@ After the execution of the command we have the following project structure.
 
 ![](images/init_project_structure.png)
 
-### Retrieving template
+## Retrieving template
 
-We already have initialized **go-retrieve** and created the necessary registry files.
+We already have initialized **go-retrieve** and created the necessary registry
+files.
 
 This is the template list configured with **go-retrieve**.
 
@@ -28,7 +31,8 @@ go-retrieve template list
 
 ![](images/template_list.png)
 
-We execute the following command to retrieve the *breadcrumb* template component.
+We execute the following command to retrieve the *breadcrumb* template
+component.
 
 ```bash
 go-retrieve template breadcrumb -d src/components
@@ -36,9 +40,9 @@ go-retrieve template breadcrumb -d src/components
 
 The flag *-d* puts the retrieved component to the specific directory.
 
-As we see from the template list, the *breadcrumb* component has an
-after retrieval command to execute. The following screenshot displays 
-the output of the command.
+As we see from the template list, the *breadcrumb* component has an after
+retrieval command to execute. The following screenshot displays the output of
+the command.
 
 ![](images/react-router-dom.png)
 
@@ -51,18 +55,20 @@ containing the corresponding typescript files.
 
 This component is now ready to use in the React application.
 
-### Component with dependencies
+## Component with dependencies
 
-A more complex example is when a component has a dependency on another component, like the *portlet* typescript
-component. In this case, **go-retrieve** retrieves the dependencies first before retrieving the requested component.
+A more complex example is when a component has a dependency on another
+component, like the *portlet* typescript component. In this case,
+**go-retrieve** retrieves the dependencies first before retrieving the requested
+component.
 
 ```bash
 go-retrieve template portlet -d src/components
 ```
 
-Again, we retrieve the *portlet* component to the *src/components* directory. 
-In the following image we can clearly see that the *placeholder* typescript component 
-has been retrieved as well.
+Again, we retrieve the *portlet* component to the *src/components* directory. In
+the following image we can clearly see that the *placeholder* typescript
+component has been retrieved as well.
 
 ![](images/final_project_structure.png)
 

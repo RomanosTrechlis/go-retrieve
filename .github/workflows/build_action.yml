@@ -1,5 +1,5 @@
+---
 name: build
-
 on:
   push:
     branches:
@@ -7,13 +7,12 @@ on:
   pull_request:
     branches:
       - master
-
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goversion: [ 1.17 ]
+        goversion: [1.17]
         goos: [linux, windows]
         goarch: [amd64]
     steps:

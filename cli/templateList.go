@@ -16,7 +16,7 @@ var templateListCmd = &cobra.Command{
 	Short: "Displays information on template definitions",
 	Long: `Displays information on template definitions.
 
-Given a provided template definition name, it displays 
+Given a provided template definition name, it displays
 that definition including the template files.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		e := env.DefaultConfigEnv()

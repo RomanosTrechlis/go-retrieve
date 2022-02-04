@@ -1,0 +1,5 @@
+# Normalize text files in case core.autocrlf isn't properly configured.
+# https://help.github.com/articles/dealing-with-line-endings
+* text=auto
+# Force Unix line endings for shell scripts
+*.sh text eol=lf

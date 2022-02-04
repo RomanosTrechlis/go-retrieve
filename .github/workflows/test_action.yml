@@ -1,19 +1,12 @@
+---
 name: tests
-
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-
+on: [push, pull_request]
 jobs:
   tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goversion: [ 1.17 ]
+        goversion: [1.17]
         goos: [linux]
         goarch: [amd64]
     steps:

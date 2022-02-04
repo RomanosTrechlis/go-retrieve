@@ -9,10 +9,10 @@ var rootCmd = &cobra.Command{
 	Use:   "go-retrieve",
 	Short: "Retrieves templates from remote or local locations",
 	Long: `Retrieves templates from remote or local locations and
-copies them to current directory. 
+copies them to current directory.
 
-Used mainly for bootstraping software projects, 
-adding modules or components to an existing project, 
+Used mainly for bootstraping software projects,
+adding modules or components to an existing project,
 or just copying resources from remote locations.
 
 First, run the 'init' command to create the required
