@@ -3,9 +3,10 @@ package config
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+
 	"github.com/RomanosTrechlis/go-retrieve/env"
 	"github.com/RomanosTrechlis/go-retrieve/util"
-	"io/ioutil"
 )
 
 func LoadConfig(e *env.ConfigEnv) (*Configuration, error) {

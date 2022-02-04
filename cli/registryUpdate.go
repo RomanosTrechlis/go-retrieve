@@ -2,30 +2,35 @@ package cli
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
+
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/registry"
 )
 
 // updateCmd represents the update command
 var updateCmd = &cobra.Command{
 	Use:   "update",
-	Short: "Not yet implemented",
-	Long:  `Not yet implemented`,
+	Short: "Compares local and remote registry",
+	Long: `Compares local and remote registry.
+
+In the case that there are differences, it prints the diff on the console.
+If there aren't any, it exits successfully.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("update not yet implemented")
+		registryUpdate(env.DefaultConfigEnv())
 	},
 }
 
-// todo: implement
+func registryUpdate(e *env.ConfigEnv) {
+	s, err := registry.UpdateRegistry(e)
+	if err != nil {
+		_, _ = fmt.Fprintf(e.Writer(), "failed to update registry: %v\n", err)
+		nonZeroExit(1)
+	}
+
+	_, _ = fmt.Fprintf(e.Writer(), s)
+}
 func init() {
 	registryCmd.AddCommand(updateCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// updateCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// updateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

@@ -2,12 +2,14 @@ package cli
 
 import (
 	"bytes"
-	"github.com/RomanosTrechlis/go-retrieve/env"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/RomanosTrechlis/go-retrieve/env"
 )
 
 func TestBackup(t *testing.T) {

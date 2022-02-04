@@ -2,11 +2,12 @@ package config_test
 
 import (
 	"bytes"
-	"github.com/RomanosTrechlis/go-retrieve/config"
-	"github.com/RomanosTrechlis/go-retrieve/env"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/RomanosTrechlis/go-retrieve/config"
+	"github.com/RomanosTrechlis/go-retrieve/env"
 )
 
 func TestLoadConfig(t *testing.T) {

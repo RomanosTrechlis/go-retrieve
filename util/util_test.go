@@ -1,11 +1,12 @@
 package util_test
 
 import (
-	"github.com/RomanosTrechlis/go-retrieve/util"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/RomanosTrechlis/go-retrieve/util"
 )
 
 func TestCSVToArray(t *testing.T) {

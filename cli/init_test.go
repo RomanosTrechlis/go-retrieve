@@ -2,11 +2,13 @@ package cli
 
 import (
 	"bytes"
-	"github.com/RomanosTrechlis/go-retrieve/env"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/RomanosTrechlis/go-retrieve/env"
 )
 
 func TestInit(t *testing.T) {

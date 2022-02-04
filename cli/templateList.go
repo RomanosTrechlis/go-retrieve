@@ -3,11 +3,13 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RomanosTrechlis/go-retrieve/env"
-	"github.com/RomanosTrechlis/go-retrieve/template"
+	"os"
+
 	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
-	"os"
+
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/template"
 )
 
 // templateListCmd represents the list command

@@ -3,11 +3,12 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RomanosTrechlis/go-retrieve/env"
-	"github.com/RomanosTrechlis/go-retrieve/util"
 	"io/ioutil"
 	"os"
 	"path"
+
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/util"
 )
 
 func ReInit(e *env.ConfigEnv, filename string, overwrite bool) error {

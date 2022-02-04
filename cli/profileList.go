@@ -2,9 +2,10 @@ package cli
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/RomanosTrechlis/go-retrieve/config"
 	"github.com/RomanosTrechlis/go-retrieve/env"
-	"os"
 
 	"github.com/spf13/cobra"
 )

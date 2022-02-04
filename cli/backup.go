@@ -3,10 +3,11 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RomanosTrechlis/go-retrieve/config"
-	"github.com/RomanosTrechlis/go-retrieve/env"
 	"io/ioutil"
 	"os"
+
+	"github.com/RomanosTrechlis/go-retrieve/config"
+	"github.com/RomanosTrechlis/go-retrieve/env"
 
 	"github.com/spf13/cobra"
 )

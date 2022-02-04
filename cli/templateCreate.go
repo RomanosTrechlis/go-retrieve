@@ -2,9 +2,11 @@ package cli
 
 import (
 	"fmt"
-	"github.com/RomanosTrechlis/go-retrieve/template"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
+
+	"github.com/RomanosTrechlis/go-retrieve/template"
 )
 
 // createCmd represents the create command

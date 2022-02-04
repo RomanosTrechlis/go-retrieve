@@ -2,8 +2,9 @@ package config
 
 import (
 	"fmt"
-	"github.com/RomanosTrechlis/go-retrieve/env"
 	"os"
+
+	"github.com/RomanosTrechlis/go-retrieve/env"
 )
 
 func Destroy(e *env.ConfigEnv) error {

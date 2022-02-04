@@ -2,12 +2,14 @@ package cli
 
 import (
 	"bytes"
-	"github.com/RomanosTrechlis/go-retrieve/env"
-	"github.com/otiai10/copy"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/otiai10/copy"
+	"github.com/stretchr/testify/assert"
+
+	"github.com/RomanosTrechlis/go-retrieve/env"
 )
 
 func TestDestroy(t *testing.T) {

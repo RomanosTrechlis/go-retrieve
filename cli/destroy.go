@@ -2,10 +2,12 @@ package cli
 
 import (
 	"fmt"
+	"os"
+
+	"github.com/spf13/cobra"
+
 	"github.com/RomanosTrechlis/go-retrieve/config"
 	"github.com/RomanosTrechlis/go-retrieve/env"
-	"github.com/spf13/cobra"
-	"os"
 )
 
 // destroyCmd represents the destroy command

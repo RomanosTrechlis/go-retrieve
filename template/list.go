@@ -3,13 +3,13 @@ package template
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
+
 	"github.com/RomanosTrechlis/go-retrieve/config"
 	"github.com/RomanosTrechlis/go-retrieve/env"
 	"github.com/RomanosTrechlis/go-retrieve/registry"
 	"github.com/RomanosTrechlis/go-retrieve/util"
-	"io/ioutil"
-	"os"
-	"path/filepath"
 )
 
 // Definition finds a registered template with the required token if exists on the local registry
@@ -58,11 +58,7 @@ func List(e *env.ConfigEnv) error {
 
 // LoadRegistryFile finds a specific registry and returns it
 func LoadRegistryFile(file string) (*registry.Registry, error) {
-	if !util.IsExists(file) {
-		return nil, fmt.Errorf("couldn't find configuration file, run 'init' command first")
-	}
-
-	b, err := ioutil.ReadFile(file)
+	b, err := util.LoadFile(file)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load config file: %v", err)
 	}

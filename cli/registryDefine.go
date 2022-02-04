@@ -6,30 +6,32 @@ package cli
 
 import (
 	"fmt"
+
 	"github.com/spf13/cobra"
+
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/registry"
 )
 
 // defineCmd represents the define command
 var defineCmd = &cobra.Command{
 	Use:   "define",
-	Short: "Not yet implemented",
-	Long:  `Not yet implemented`,
+	Short: "Create a new empty registry definition",
+	Long:  `Create a new empty registry definition`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("define not yet implemented")
+		registryDefine(env.DefaultConfigEnv())
 	},
 }
 
-// todo: implement
+func registryDefine(e *env.ConfigEnv) {
+	s, err := registry.Define(e)
+	if err != nil {
+		_, _ = fmt.Fprintf(e.Writer(), "failed to define registry: %v\n", err)
+		nonZeroExit(1)
+	}
+	_, _ = fmt.Fprintf(e.Writer(), s)
+}
+
 func init() {
 	registryCmd.AddCommand(defineCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// defineCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// defineCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

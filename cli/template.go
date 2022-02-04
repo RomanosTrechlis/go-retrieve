@@ -2,15 +2,17 @@ package cli
 
 import (
 	"fmt"
-	"github.com/RomanosTrechlis/go-retrieve/dl"
-	"github.com/RomanosTrechlis/go-retrieve/env"
-	"github.com/RomanosTrechlis/go-retrieve/template"
-	"github.com/spf13/cobra"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+
+	"github.com/spf13/cobra"
+
+	"github.com/RomanosTrechlis/go-retrieve/dl"
+	"github.com/RomanosTrechlis/go-retrieve/env"
+	"github.com/RomanosTrechlis/go-retrieve/template"
 )
 
 // templateCmd represents the template command

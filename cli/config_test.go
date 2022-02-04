@@ -2,11 +2,13 @@ package cli
 
 import (
 	"bytes"
-	"github.com/RomanosTrechlis/go-retrieve/env"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/RomanosTrechlis/go-retrieve/env"
 )
 
 var configJson string = `{

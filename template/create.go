@@ -3,11 +3,12 @@ package template
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RomanosTrechlis/go-retrieve/registry"
-	"github.com/RomanosTrechlis/go-retrieve/util"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/RomanosTrechlis/go-retrieve/registry"
+	"github.com/RomanosTrechlis/go-retrieve/util"
 )
 
 // CreateTemplateConfig prints the section of the configuration necessary to define a template

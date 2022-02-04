@@ -29,6 +29,15 @@ func WriteFile(filePath, filename string, jsonData interface{}) error {
 	return ioutil.WriteFile(configFile, file, 0755)
 }
 
+// LoadFile returns the bytes of a file if it exists
+func LoadFile(filename string) ([]byte, error) {
+	if !IsExists(filename) {
+		return nil, fmt.Errorf("couldn't find file")
+	}
+
+	return ioutil.ReadFile(filename)
+}
+
 // Scan prints a prompt and wait for user input to return
 func Scan(prompt string) string {
 	prompt = strings.TrimRight(prompt, " ")

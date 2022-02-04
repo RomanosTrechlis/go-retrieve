@@ -3,12 +3,14 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+
+	"github.com/davecgh/go-spew/spew"
+	"github.com/spf13/cobra"
+
 	"github.com/RomanosTrechlis/go-retrieve/config"
 	"github.com/RomanosTrechlis/go-retrieve/env"
 	"github.com/RomanosTrechlis/go-retrieve/util"
-	"github.com/davecgh/go-spew/spew"
-	"github.com/spf13/cobra"
-	"os"
 )
 
 // inspectCmd represents the inspect command
