@@ -26,72 +26,111 @@ var templateCmd = &cobra.Command{
 			nonZeroExit(1)
 		}
 		dir, _ := cmd.Flags().GetString("destination")
+		flat, _ := cmd.Flags().GetBool("flat")
 
-		executeTemplate(env.DefaultConfigEnv(), dir, args[0])
+		executeTemplate(env.DefaultConfigEnv(), dir, args[0], flat)
 	},
 }
 
-func executeTemplate(e *env.ConfigEnv, destination, templateName string) {
+func executeTemplate(e *env.ConfigEnv, destination, templateName string, isFlat bool) {
 	temp, token, err := template.Definition(e, templateName)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to retrieve template definition: %v\n", err)
 		nonZeroExit(1)
 	}
-	dir := ""
-	if destination == "" {
-		dir = temp.Name
-	} else {
-		dir = filepath.Join(destination, temp.Name)
-	}
 
 	// todo: check cyclical dependencies
 	if len(temp.Dependencies) != 0 {
 		for _, tn := range temp.Dependencies {
-			executeTemplate(e, destination, tn)
+			executeTemplate(e, destination, tn, isFlat)
 		}
 	}
 
-	err = os.MkdirAll(dir, 0755)
+	err = createDirIfRequired(destination, temp.Name, isFlat)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to create directory: %v\n", err)
 		nonZeroExit(1)
 	}
 
-	for _, f := range temp.Files {
-		b, err := dl.Download(temp.Url+f, token)
+	err = writeFiles(temp.Files, temp.Url, token, destination, temp.Name, isFlat)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "failed to write file '%s': %v\n", filename, err)
+		nonZeroExit(1)
+	}
+
+	err = executeCommandsIfRequired(temp.Commands)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "failed to execute after retrieval command '%s': %v\n",
+			temp.Commands, err)
+		nonZeroExit(1)
+	}
+}
+
+func writeFiles(files []string, baseURL, token, destination, tempName string, isFlat bool) error {
+	for _, f := range files {
+		b, err := dl.Download(baseURL+f, token)
 		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to download file '%s': %v\n", f, err)
-			nonZeroExit(1)
+			return err
 		}
 
-		filename := filepath.Join(dir, f)
+		// todo: add warning when overriding
+		filename := filename(destination, tempName, f, isFlat)
 		err = ioutil.WriteFile(filename, b, 0755)
 		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to write file '%s': %v\n", filename, err)
-			nonZeroExit(1)
+			return err
 		}
 	}
+	return nil
+}
 
-	if temp.Commands != "" {
-		cmd := exec.Command(temp.Commands)
-		cc := strings.Split(temp.Commands, " ")
-		if len(cc) > 1 {
-			cmd = exec.Command(cc[0], cc[1:len(cc)]...)
-		}
-
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-
-		err := cmd.Run()
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to execute after retrieval command '%s': %v\n",
-				temp.Commands, err)
-			nonZeroExit(1)
-		}
+func executeCommandsIfRequired(command string) error {
+	if command == "" {
+		return nil
 	}
+
+	cmd := exec.Command(command)
+	cc := strings.Split(command, " ")
+	if len(cc) > 1 {
+		cmd = exec.Command(cc[0], cc[1:]...)
+	}
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd.Run()
+}
+
+func createDirIfRequired(destination, tempName string, isFlat bool) error {
+	if !hasDir(destination, isFlat) {
+		return nil
+	}
+	dir := dir(destination, tempName)
+	return os.MkdirAll(dir, 0755)
+}
+
+func hasDir(destination string, isFlat bool) bool {
+	return destination != "" || !isFlat
+}
+
+func filename(destination, tempName, filename string, isFlat bool) string {
+	if !hasDir(destination, isFlat) {
+		return filename
+	}
+	return filepath.Join(dir(destination, tempName), filename)
+}
+
+func dir(destination, templateName string) string {
+	if destination == "" {
+		return templateName
+	}
+	return filepath.Join(destination, templateName)
 }
 
 func init() {
 	rootCmd.AddCommand(templateCmd)
-	templateCmd.Flags().StringP("destination", "d", "", "Download template to specific destination")
+	templateCmd.Flags().StringP("destination", "d", "",
+		"Download template to specific destination")
+	templateCmd.Flags().BoolP("flat", "f", false,
+		`Download files in the destination instead of the template directory. 
+Note: this applies to dependencies also.`)
 }
