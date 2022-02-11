@@ -48,19 +48,19 @@ func executeTemplate(e *env.ConfigEnv, destination, templateName string, isFlat 
 
 	err = createDirIfRequired(destination, temp.Name, isFlat)
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "failed to create directory: %v\n", err)
+		_, _ = fmt.Fprintf(e.Writer(), "failed to create directory: %v\n", err)
 		nonZeroExit(1)
 	}
 
 	err = writeFiles(temp.Files, temp.Url, token, destination, temp.Name, isFlat)
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "failed to write file '%s': %v\n", filename, err)
+		_, _ = fmt.Fprintf(e.Writer(), "failed to write file '%s': %v\n", temp.Name, err)
 		nonZeroExit(1)
 	}
 
 	err = executeCommandsIfRequired(temp.Commands)
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "failed to execute after retrieval command '%s': %v\n",
+		_, _ = fmt.Fprintf(e.Writer(), "failed to execute after retrieval command '%s': %v\n",
 			temp.Commands, err)
 		nonZeroExit(1)
 	}
