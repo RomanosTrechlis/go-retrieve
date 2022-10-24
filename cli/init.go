@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/spf13/cobra"
 
@@ -13,13 +14,14 @@ import (
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Execute wizard to initialize the go-retrieve",
-	Long: `Execute wizard to initialize the go-retrieve.
+	Short: "Execute wizard to initialize the rt configuration",
+	Long: `Execute wizard to initialize the rt configuration.
 
 Follow the steps on the terminal to create profiles and
 sources. You can reinstate an existing configuration file.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		e := env.DefaultConfigEnv()
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		e := env.DefaultConfigEnv(isJson)
 		f, _ := cmd.Flags().GetString("filename")
 		o, _ := cmd.Flags().GetBool("overwrite")
 		executeInit(e, f, o)

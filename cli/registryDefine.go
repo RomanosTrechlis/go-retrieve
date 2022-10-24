@@ -1,11 +1,11 @@
 /*
 Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-
 */
 package cli
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/spf13/cobra"
 
@@ -19,7 +19,8 @@ var defineCmd = &cobra.Command{
 	Short: "Create a new empty registry definition",
 	Long:  `Create a new empty registry definition`,
 	Run: func(cmd *cobra.Command, args []string) {
-		registryDefine(env.DefaultConfigEnv())
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		registryDefine(env.DefaultConfigEnv(isJson))
 	},
 }
 

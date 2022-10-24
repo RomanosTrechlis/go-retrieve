@@ -20,13 +20,13 @@ After the execution of the command we have the following project structure.
 
 ## Retrieving template
 
-We already have initialized **go-retrieve** and created the necessary registry
+We already have initialized **rt** and created the necessary registry
 files.
 
-This is the template list configured with **go-retrieve**.
+This is the template list configured with **rt**.
 
 ```bash
-go-retrieve template list
+rt template list
 ```
 
 ![](images/template_list.png)
@@ -35,7 +35,7 @@ We execute the following command to retrieve the *breadcrumb* template
 component.
 
 ```bash
-go-retrieve template breadcrumb -d src/components
+rt template breadcrumb -d src/components
 ```
 
 The flag *-d* puts the retrieved component to the specific directory.
@@ -59,11 +59,11 @@ This component is now ready to use in the React application.
 
 A more complex example is when a component has a dependency on another
 component, like the *portlet* typescript component. In this case,
-**go-retrieve** retrieves the dependencies first before retrieving the requested
+**rt** retrieves the dependencies first before retrieving the requested
 component.
 
 ```bash
-go-retrieve template portlet -d src/components
+rt template portlet -d src/components
 ```
 
 Again, we retrieve the *portlet* component to the *src/components* directory. In

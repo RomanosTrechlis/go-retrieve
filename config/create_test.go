@@ -1,7 +1,6 @@
 package config
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -16,7 +15,7 @@ func TestMore(t *testing.T) {
 
 func scanMore(t *testing.T, d, i string, o bool) {
 	content := []byte(i)
-	tmpfile, err := ioutil.TempFile("", "example")
+	tmpfile, err := os.CreateTemp("", "example")
 	if err != nil {
 		t.Errorf("failed to create temp file")
 	}

@@ -1,9 +1,9 @@
 package cli
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
@@ -20,11 +20,12 @@ var inspectCmd = &cobra.Command{
 	Long:  `Display the configuration of specific profile`,
 	Run: func(cmd *cobra.Command, args []string) {
 		dump, _ := cmd.Flags().GetBool("dump")
-		executeProfileInspect(env.DefaultConfigEnv(), args, dump)
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		executeProfileInspect(env.DefaultConfigEnv(isJson), args, dump, isJson)
 	},
 }
 
-func executeProfileInspect(e *env.ConfigEnv, args []string, dump bool) {
+func executeProfileInspect(e *env.ConfigEnv, args []string, dump, isJson bool) {
 	if len(args) == 0 {
 		_, _ = fmt.Fprintf(os.Stderr, "provide at least one profile to inspect\n")
 		nonZeroExit(1)
@@ -51,7 +52,7 @@ func executeProfileInspect(e *env.ConfigEnv, args []string, dump bool) {
 			spew.Fdump(e.Writer(), p)
 			return
 		}
-		s, _ := json.MarshalIndent(p, "", "  ")
+		s, _ := util.MarshalIndent(c, isJson)
 		_, _ = fmt.Fprintln(e.Writer(), string(s))
 	}
 }

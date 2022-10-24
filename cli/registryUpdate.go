@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/spf13/cobra"
 
@@ -18,7 +19,8 @@ var updateCmd = &cobra.Command{
 In the case that there are differences, it prints the diff on the console.
 If there aren't any, it exits successfully.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		registryUpdate(env.DefaultConfigEnv())
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		registryUpdate(env.DefaultConfigEnv(isJson))
 	},
 }
 

@@ -1,7 +1,6 @@
 package template
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -13,7 +12,7 @@ import (
 
 // CreateTemplateConfig prints the section of the configuration necessary to define a template
 // given a specific path and, if necessary, paths to exclude
-func CreateTemplateConfig(path string, excludeCSV string) error {
+func CreateTemplateConfig(path string, excludeCSV string, isJson bool) error {
 	name := util.Scan("What is the name of the template?")
 	cmd := util.Scan("What command should be executed after retrieving the template?")
 	url := util.Scan("What is the base url?")
@@ -34,7 +33,7 @@ func CreateTemplateConfig(path string, excludeCSV string) error {
 		Files:        files,
 	}
 
-	b, err := json.MarshalIndent(template, "", "  ")
+	b, err := template.MarshalIdent(isJson)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal template file: %v", err)
 	}

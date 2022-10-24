@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/spf13/cobra"
 
@@ -16,7 +17,8 @@ var destroyCmd = &cobra.Command{
 	Short: "Delete configuration folder with the corresponding files",
 	Long:  `Delete configuration folder with the corresponding files`,
 	Run: func(cmd *cobra.Command, args []string) {
-		executeDestroy(env.DefaultConfigEnv())
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		executeDestroy(env.DefaultConfigEnv(isJson))
 	},
 }
 

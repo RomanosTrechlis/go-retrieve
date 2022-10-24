@@ -3,7 +3,7 @@ package dl
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 )
@@ -25,7 +25,7 @@ func TestDownload(t *testing.T) {
 	// build our response JSON
 	jsonResponse := `[{"full_name": "mock-repo"}]`
 	// create a new reader with that JSON
-	r := ioutil.NopCloser(bytes.NewReader([]byte(jsonResponse)))
+	r := io.NopCloser(bytes.NewReader([]byte(jsonResponse)))
 
 	httpClient = func() HTTPClient {
 		return &mockClient{
@@ -48,7 +48,7 @@ func TestDownload(t *testing.T) {
 			mockDo: func(*http.Request) (*http.Response, error) {
 				return &http.Response{
 					StatusCode: 404,
-					Body:       ioutil.NopCloser(bytes.NewReader([]byte("Error 404"))),
+					Body:       io.NopCloser(bytes.NewReader([]byte("Error 404"))),
 				}, nil
 			},
 		}

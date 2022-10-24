@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"gopkg.in/yaml.v3"
 	"os"
 	"path"
 	"strings"
@@ -12,8 +12,8 @@ import (
 
 // WriteFile creates a file with the given filename at the given
 // filePath containing the json data passed in the parameter.
-func WriteFile(filePath, filename string, jsonData interface{}) error {
-	file, err := json.MarshalIndent(jsonData, "", " ")
+func WriteFile(filePath, filename string, data interface{}) error {
+	file, err := MarshalIndent(data, strings.HasSuffix(filename, "json"))
 	if err != nil {
 		return err
 	}
@@ -26,7 +26,7 @@ func WriteFile(filePath, filename string, jsonData interface{}) error {
 	}
 
 	configFile := path.Join(filePath, filename)
-	return ioutil.WriteFile(configFile, file, 0755)
+	return os.WriteFile(configFile, file, 0755)
 }
 
 // LoadFile returns the bytes of a file if it exists
@@ -35,7 +35,7 @@ func LoadFile(filename string) ([]byte, error) {
 		return nil, fmt.Errorf("couldn't find file")
 	}
 
-	return ioutil.ReadFile(filename)
+	return os.ReadFile(filename)
 }
 
 // Scan prints a prompt and wait for user input to return
@@ -73,4 +73,11 @@ func CSVToArray(csv string) []string {
 		arr[i] = strings.Trim(arr[i], " ")
 	}
 	return arr
+}
+
+func MarshalIndent(c interface{}, isJson bool) ([]byte, error) {
+	if isJson {
+		return json.MarshalIndent(c, "", "  ")
+	}
+	return yaml.Marshal(c)
 }

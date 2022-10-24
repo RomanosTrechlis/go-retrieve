@@ -1,8 +1,7 @@
 package registry
 
 import (
-	"encoding/json"
-
+	"fmt"
 	"github.com/RomanosTrechlis/go-retrieve/config"
 	"github.com/RomanosTrechlis/go-retrieve/dl"
 	"github.com/RomanosTrechlis/go-retrieve/env"
@@ -32,11 +31,10 @@ func upgradeSource(e *env.ConfigEnv, s *config.ConfigurationSource) error {
 		return err
 	}
 
-	var r *Registry
-	err = json.Unmarshal(b, &r)
+	r, err := Unmarshal(b, e.IsJson())
 	if err != nil {
 		return err
 	}
 
-	return util.WriteFile(e.ConfigPath(), s.Name+".json", r)
+	return util.WriteFile(e.ConfigPath(), fmt.Sprintf("%s.%s", s.Name, e.Suffix()), r)
 }

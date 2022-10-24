@@ -1,0 +1,21 @@
+---
+name: "registry"
+protocol: 1
+templates:
+  - name: breadcrumb
+    url: ""
+    commands: "yarn add react-router-dom"
+    files:
+      - Breadcrumb.tsx
+      - BreadcrumbItem.tsx
+  - name: placeholder
+    url: ""
+    commands: ""
+    files:
+      - Placeholder.tsx
+  - name: portlet
+    url: ""
+    dependencies:
+      - portlet
+    files:
+      - Portlet.tsx

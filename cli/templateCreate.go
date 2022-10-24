@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/spf13/cobra"
 
@@ -21,13 +22,14 @@ var createCmd = &cobra.Command{
 		}
 
 		ex, _ := cmd.Flags().GetString("exclude")
-		executeCreate(args[0], ex)
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		executeCreate(args[0], ex, isJson)
 	},
 }
 
-func executeCreate(templateName, ex string) {
+func executeCreate(templateName, ex string, isJson bool) {
 	// todo: upload functionality?
-	err := template.CreateTemplateConfig(templateName, ex)
+	err := template.CreateTemplateConfig(templateName, ex, isJson)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to create template: %v", err)
 		nonZeroExit(1)

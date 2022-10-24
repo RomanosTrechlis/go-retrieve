@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/spf13/cobra"
 
@@ -17,7 +18,8 @@ var upgradeCmd = &cobra.Command{
 
 It always override the existing (local) registry with the newest remote one.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		registryUpgrade(env.DefaultConfigEnv())
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		registryUpgrade(env.DefaultConfigEnv(isJson))
 	},
 }
 
