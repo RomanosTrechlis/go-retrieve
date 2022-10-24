@@ -38,6 +38,6 @@ jobs:
 
       - name: Run build
         run: |
-          cd cmd/go-retrieve
+          cd cmd/rt
           go build .
           cd ../..
