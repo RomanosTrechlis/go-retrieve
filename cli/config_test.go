@@ -41,14 +41,14 @@ func TestConfig(t *testing.T) {
 	pwd, _ := os.Getwd()
 	var output bytes.Buffer
 	e := env.New(pwd, "data", "config.json", &output)
-	executeConfig(e, false)
+	executeConfig(e, false, true)
 	if output.String() != configJson {
 		t.Errorf("failed to print the right information: expected %s, got %s", output.String(), configJson)
 	}
 
 	var dumpOutput bytes.Buffer
 	e = env.New(pwd, "data", "config.json", &dumpOutput)
-	executeConfig(e, true)
+	executeConfig(e, true, true)
 	if !strings.HasPrefix(dumpOutput.String(), "(*config.Configuration)") {
 		t.Errorf("dump failed to print the right information: expected to begin with %s, got %s",
 			"(*config.Configuration)", dumpOutput.String())
@@ -61,7 +61,7 @@ func TestConfig(t *testing.T) {
 	}
 
 	executor := func() {
-		executeConfig(e, false)
+		executeConfig(e, false, true)
 	}
 	assert.PanicsWithValue(t, "exited", executor, "expected to exit with code 1")
 }

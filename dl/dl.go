@@ -2,7 +2,7 @@ package dl
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 )
@@ -26,10 +26,10 @@ func Download(url string, tokenEnvVar string) ([]byte, error) {
 
 	statusOK := resp.StatusCode >= 200 && resp.StatusCode < 300
 	if !statusOK {
-		return nil, fmt.Errorf("failed to download file, status code: %v", resp.StatusCode)
+		return nil, fmt.Errorf("failed to download file '%s', status code: %v", url, resp.StatusCode)
 	}
 
-	return ioutil.ReadAll(resp.Body)
+	return io.ReadAll(resp.Body)
 }
 
 // HTTPClient interface

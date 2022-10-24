@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/RomanosTrechlis/go-retrieve/config"
 	"github.com/RomanosTrechlis/go-retrieve/env"
@@ -16,7 +17,8 @@ var profileListCmd = &cobra.Command{
 	Short: "Lists all the available profiles",
 	Long:  `Lists all the available profiles`,
 	Run: func(cmd *cobra.Command, args []string) {
-		executeProfileList(env.DefaultConfigEnv())
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		executeProfileList(env.DefaultConfigEnv(isJson))
 	},
 }
 

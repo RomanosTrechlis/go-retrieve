@@ -2,9 +2,8 @@ package registry
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/google/go-cmp/cmp"
@@ -38,24 +37,22 @@ func findDifferences(e *env.ConfigEnv, s *config.ConfigurationSource, b *bytes.B
 		return err
 	}
 
-	filename := filepath.Join(e.ConfigPath(), s.Name+".json")
+	filename := filepath.Join(e.ConfigPath(), fmt.Sprintf("%s.%s", s.Name, e.Suffix()))
 	localB, err := util.LoadFile(filename)
 	if err != nil {
-		err = ioutil.WriteFile(filename, remoteB, 0755)
+		err = os.WriteFile(filename, remoteB, 0755)
 		if err != nil {
 			return err
 		}
 	}
 
 	//diff := cmp.Diff(localB, remoteB)
-	var remote *Registry
-	err = json.Unmarshal(remoteB, &remote)
+	remote, err := Unmarshal(remoteB, e.IsJson())
 	if err != nil {
 		return err
 	}
 
-	var local *Registry
-	err = json.Unmarshal(localB, &local)
+	local, err := Unmarshal(localB, e.IsJson())
 	if err != nil {
 		return err
 	}

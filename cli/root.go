@@ -6,7 +6,7 @@ import (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "go-retrieve",
+	Use:   "rt",
 	Short: "Retrieves templates from remote or local locations",
 	Long: `Retrieves templates from remote or local locations and
 copies them to current directory.
@@ -32,4 +32,5 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.PersistentFlags().BoolP("json", "j", false, "use this flag for json config files")
 }

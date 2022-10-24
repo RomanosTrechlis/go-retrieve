@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/RomanosTrechlis/go-retrieve/config"
 	"github.com/RomanosTrechlis/go-retrieve/env"
@@ -18,7 +19,8 @@ var profileCmd = &cobra.Command{
 
 Additionally, you can inspect a specific profile.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		executeProfile(env.DefaultConfigEnv(), args)
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		executeProfile(env.DefaultConfigEnv(isJson), args)
 	},
 }
 
@@ -70,7 +72,7 @@ func displayActive(e *env.ConfigEnv, c *config.Configuration) {
 		profile = c.Active.Name
 	}
 
-	_, _ = fmt.Fprintf(e.Writer(), "active profile: %s", profile)
+	_, _ = fmt.Fprintf(e.Writer(), "active profile: %s\n", profile)
 }
 
 func init() {

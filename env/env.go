@@ -4,6 +4,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type ConfigEnv struct {
@@ -11,15 +12,25 @@ type ConfigEnv struct {
 	ConfigDir  string
 	ConfigName string
 	w          io.Writer
+	j          bool
 }
 
-func DefaultConfigEnv() *ConfigEnv {
+func DefaultConfigEnv(isJson bool) *ConfigEnv {
 	home, _ := os.UserHomeDir()
-	return &ConfigEnv{home, ".go-retrieve", "config.json", os.Stdout}
+	configName := "config.yml"
+	if isJson {
+		configName = "config.json"
+	}
+	return &ConfigEnv{home, ".rt", configName, os.Stdout, isJson}
 }
 
 func New(homeDir, configDir, configName string, w io.Writer) *ConfigEnv {
-	return &ConfigEnv{homeDir, configDir, configName, w}
+	return &ConfigEnv{
+		homeDir,
+		configDir,
+		configName,
+		w,
+		strings.HasSuffix(configName, "json")}
 }
 
 func (c *ConfigEnv) ConfigPath() string {
@@ -35,4 +46,15 @@ func (c *ConfigEnv) ConfigFilePath() string {
 
 func (c *ConfigEnv) Writer() io.Writer {
 	return c.w
+}
+
+func (c *ConfigEnv) IsJson() bool {
+	return c.j
+}
+
+func (c *ConfigEnv) Suffix() string {
+	if c.IsJson() {
+		return "json"
+	}
+	return "yml"
 }

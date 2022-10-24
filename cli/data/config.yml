@@ -1,0 +1,15 @@
+---
+active:
+  name: github
+  sources:
+    - name: registry
+      url: URL
+      token: ${RT_TOKEN}
+
+profiles:
+  -
+    name: github
+    sources:
+      - name: registry
+        url: URL
+        token: ${RT_TOKEN}

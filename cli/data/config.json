@@ -1,24 +1,24 @@
 {
- "active": {
-  "name": "github",
-  "sources": [
-   {
-    "name": "registry",
-    "url": "URL",
-    "token": "RETEMP_TOKEN"
-   }
-  ]
- },
- "profiles": [
-  {
-   "name": "github",
-   "sources": [
+  "active": {
+    "name": "github",
+    "sources": [
+      {
+        "name": "registry",
+        "url": "URL",
+        "token": "RETEMP_TOKEN"
+      }
+    ]
+  },
+  "profiles": [
     {
-     "name": "registry",
-     "url": "URL",
-     "token": "RETEMP_TOKEN"
+      "name": "github",
+      "sources": [
+        {
+          "name": "registry",
+          "url": "URL",
+          "token": "RETEMP_TOKEN"
+        }
+      ]
     }
-   ]
-  }
- ]
+  ]
 }

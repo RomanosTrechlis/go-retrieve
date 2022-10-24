@@ -1,10 +1,10 @@
 package cli
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"github.com/RomanosTrechlis/go-retrieve/util"
 	"os"
+	"strconv"
 
 	"github.com/RomanosTrechlis/go-retrieve/config"
 	"github.com/RomanosTrechlis/go-retrieve/env"
@@ -19,18 +19,19 @@ var backupCmd = &cobra.Command{
 	Long:  `Copies the configuration file to current directory`,
 	Run: func(cmd *cobra.Command, args []string) {
 		f, _ := cmd.Flags().GetString("filename")
-		executeBackup(env.DefaultConfigEnv(), f)
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		executeBackup(env.DefaultConfigEnv(isJson), f, isJson)
 	},
 }
 
-func executeBackup(e *env.ConfigEnv, f string) {
+func executeBackup(e *env.ConfigEnv, f string, isJson bool) {
 	c, err := config.LoadConfig(e)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
 		nonZeroExit(1)
 	}
 
-	b, err := json.MarshalIndent(c, "", "  ")
+	b, err := util.MarshalIndent(c, isJson)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to marshal config: %v\n", err)
 		nonZeroExit(1)
@@ -40,7 +41,7 @@ func executeBackup(e *env.ConfigEnv, f string) {
 	if f != "" {
 		filename = f
 	}
-	err = ioutil.WriteFile(filename, b, 0755)
+	err = os.WriteFile(filename, b, 0755)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to write config file: %v\n", err)
 		nonZeroExit(1)

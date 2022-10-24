@@ -1,24 +1,20 @@
 package config
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"os"
-	"path"
-
 	"github.com/RomanosTrechlis/go-retrieve/env"
 	"github.com/RomanosTrechlis/go-retrieve/util"
+	"os"
+	"path"
 )
 
 func ReInit(e *env.ConfigEnv, filename string, overwrite bool) error {
-	b, err := ioutil.ReadFile(filename)
+	b, err := os.ReadFile(filename)
 	if err != nil {
 		return fmt.Errorf("failed to read file '%s': %v", filename, err)
 	}
 
-	var c *Configuration
-	err = json.Unmarshal(b, &c)
+	c, err := Unmarshal(b, e.IsJson())
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal config file: %v", err)
 	}

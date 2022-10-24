@@ -2,7 +2,6 @@ package cli
 
 import (
 	"bytes"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -34,7 +33,7 @@ func TestDestroy(t *testing.T) {
 	// successfully destroying env
 	e = env.New(pwd, "data_to_delete", "config.json", &output)
 	executeDestroy(e)
-	_, err := ioutil.ReadFile(e.ConfigFilePath())
+	_, err := os.ReadFile(e.ConfigFilePath())
 	if err == nil {
 		t.Errorf("failed to destroy env")
 	}

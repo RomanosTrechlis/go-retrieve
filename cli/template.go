@@ -2,10 +2,10 @@ package cli
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -28,7 +28,8 @@ var templateCmd = &cobra.Command{
 		dir, _ := cmd.Flags().GetString("destination")
 		flat, _ := cmd.Flags().GetBool("flat")
 
-		executeTemplate(env.DefaultConfigEnv(), dir, args[0], flat)
+		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		executeTemplate(env.DefaultConfigEnv(isJson), dir, args[0], flat)
 	},
 }
 
@@ -75,7 +76,7 @@ func writeFiles(files []string, baseURL, token, destination, tempName string, is
 
 		// todo: add warning when overriding
 		filename := filename(destination, tempName, f, isFlat)
-		err = ioutil.WriteFile(filename, b, 0755)
+		err = os.WriteFile(filename, b, 0755)
 		if err != nil {
 			return err
 		}

@@ -1,7 +1,6 @@
 package util_test
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -100,7 +99,7 @@ func TestScan(t *testing.T) {
 
 func scanTest(t *testing.T, test scanTestCase) {
 	content := []byte(test.input)
-	tmpfile, err := ioutil.TempFile("", "example")
+	tmpfile, err := os.CreateTemp("", "example")
 	if err != nil {
 		t.Errorf("failed to create temp file")
 	}

@@ -1,12 +1,10 @@
 package registry
 
 import (
-	"encoding/json"
 	"fmt"
-	"strconv"
-
 	"github.com/RomanosTrechlis/go-retrieve/env"
 	"github.com/RomanosTrechlis/go-retrieve/util"
+	"strconv"
 )
 
 func Define(e *env.ConfigEnv) (string, error) {
@@ -23,7 +21,8 @@ func Define(e *env.ConfigEnv) (string, error) {
 	}
 
 	r := &Registry{name, Protocol(p), []RegisteredTemplate{}}
-	b, err := json.MarshalIndent(r, "", "  ")
+
+	b, err := util.MarshalIndent(r, e.IsJson())
 	if err != nil {
 		return "", err
 	}

@@ -6,8 +6,17 @@ import (
 	"testing"
 )
 
-func TestConfigEnv_ConfigFilePath(t *testing.T) {
-	e := DefaultConfigEnv()
+func TestConfigEnv_ConfigFilePathJSON(t *testing.T) {
+	e := DefaultConfigEnv(true)
+	testConfigEnvConfigPath(t, e)
+}
+
+func TestConfigEnv_ConfigFilePathYML(t *testing.T) {
+	e := DefaultConfigEnv(false)
+	testConfigEnvConfigPath(t, e)
+}
+
+func testConfigEnvConfigPath(t *testing.T, e *ConfigEnv) {
 	h, _ := os.UserHomeDir()
 	dir := filepath.Join(h, e.ConfigDir)
 	if dir != e.ConfigPath() {

@@ -1,9 +1,10 @@
 package cli
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/RomanosTrechlis/go-retrieve/util"
 	"os"
+	"strconv"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
@@ -18,13 +19,14 @@ var configCmd = &cobra.Command{
 	Short: "Displays the configuration file",
 	Long:  `Displays the content of the configuration file if it exists`,
 	Run: func(cmd *cobra.Command, args []string) {
-		e := env.DefaultConfigEnv()
+		j, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
+		e := env.DefaultConfigEnv(j)
 		d, _ := cmd.Flags().GetBool("dump")
-		executeConfig(e, d)
+		executeConfig(e, d, j)
 	},
 }
 
-func executeConfig(e *env.ConfigEnv, dump bool) {
+func executeConfig(e *env.ConfigEnv, dump bool, isJson bool) {
 	c, err := config.LoadConfig(e)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)
@@ -38,7 +40,7 @@ func executeConfig(e *env.ConfigEnv, dump bool) {
 		return
 	}
 
-	s, _ := json.MarshalIndent(c, "", "  ")
+	s, _ := util.MarshalIndent(c, isJson)
 	_, _ = fmt.Fprintln(e.Writer(), string(s))
 }
 
