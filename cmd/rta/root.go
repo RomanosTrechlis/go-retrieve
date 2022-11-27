@@ -19,7 +19,7 @@ accompanying registry configuration files.`,
 	// show config file
 	Run: func(cmd *cobra.Command, args []string) {
 		e := env.DefaultConfigEnv(false)
-		cli.ExecuteConfig(e, false)
+		cli.ExecuteConfigPrint(e, false)
 	},
 }
 

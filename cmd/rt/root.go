@@ -22,7 +22,7 @@ configuration files. Follow the steps of the wizard.`,
 	// show config file
 	Run: func(cmd *cobra.Command, args []string) {
 		e := env.DefaultConfigEnv(false)
-		cli.ExecuteConfig(e, false)
+		cli.ExecuteConfigPrint(e, false)
 	},
 }
 

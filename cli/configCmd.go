@@ -23,11 +23,11 @@ func cfg(rootCmd *cobra.Command) func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
 		e := env.DefaultConfigEnv(false)
 		d, _ := cmd.Flags().GetBool("dump")
-		ExecuteConfig(e, d)
+		ExecuteConfigPrint(e, d)
 	}
 }
 
-func ExecuteConfig(e *env.ConfigEnv, dump bool) {
+func ExecuteConfigPrint(e *env.ConfigEnv, dump bool) {
 	c, err := config.LoadConfig(e)
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "failed to load config: %v\n", err)

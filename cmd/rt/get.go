@@ -18,7 +18,7 @@ func init() {
 		`Download files in the destination instead of the template directory. 
 Note: this applies to dependencies also.`)
 
-	templateCmd.AddCommand(templateListCmd)
-	templateListCmd.Flags().BoolP("dump", "d", false, "Dump profile configuration")
-
+	//templateCmd.AddCommand(templateListCmd)
+	//templateListCmd.Flags().BoolP("dump", "d", false, "Dump profile configuration")
+	rootCmd.AddCommand(templateListCmd)
 }

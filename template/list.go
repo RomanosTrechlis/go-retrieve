@@ -71,9 +71,11 @@ func templateWalk(configName string) func(innerPath string, info os.FileInfo, er
 		}
 
 		for i, t := range r.Templates {
-			fmt.Printf("%d/\n", i+1)
-			fmt.Printf("Name: \t\t%s\nURL: \t\t%s\nCommands: \t%s\nDependencies: \t%v\n",
-				t.Name, t.Url, t.Commands, t.Dependencies)
+			fmt.Printf("%d/ %s", i+1, t.Name)
+			if t.Description != "" {
+				fmt.Printf(": %s", t.Description)
+			}
+			fmt.Println()
 		}
 		return nil
 	}
