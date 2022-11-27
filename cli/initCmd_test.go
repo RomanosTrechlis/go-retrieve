@@ -12,11 +12,16 @@ import (
 )
 
 func TestInit(t *testing.T) {
+	init := RegisterInitCmd(nil)
+	if init.Name() != "init" {
+		t.Errorf("expected 'init', got '%s'", init.Name())
+	}
+
 	pwd, _ := os.Getwd()
 	var output bytes.Buffer
-	e := env.New(pwd, "data", "config.json", &output)
+	e := env.New(pwd, "./data", "config.json", &output)
 
-	nonZeroExit = func(c int) {
+	NonZeroExit = func(c int) {
 		panic("exited")
 	}
 

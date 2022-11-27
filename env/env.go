@@ -18,9 +18,6 @@ type ConfigEnv struct {
 func DefaultConfigEnv(isJson bool) *ConfigEnv {
 	home, _ := os.UserHomeDir()
 	configName := "config.yml"
-	if isJson {
-		configName = "config.json"
-	}
 	return &ConfigEnv{home, ".rt", configName, os.Stdout, isJson}
 }
 

@@ -7,8 +7,7 @@ active:
       token: ${RT_TOKEN}
 
 profiles:
-  -
-    name: github
+  - name: github
     sources:
       - name: registry
         url: URL

@@ -1,9 +1,8 @@
-package cli
+package main
 
 import (
 	"fmt"
-	"strconv"
-
+	"github.com/RomanosTrechlis/go-retrieve/cli"
 	"github.com/spf13/cobra"
 
 	"github.com/RomanosTrechlis/go-retrieve/env"
@@ -18,8 +17,7 @@ var upgradeCmd = &cobra.Command{
 
 It always override the existing (local) registry with the newest remote one.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		isJson, _ := strconv.ParseBool(rootCmd.Flag("json").Value.String())
-		registryUpgrade(env.DefaultConfigEnv(isJson))
+		registryUpgrade(env.DefaultConfigEnv(false))
 	},
 }
 
@@ -27,10 +25,10 @@ func registryUpgrade(e *env.ConfigEnv) {
 	err := registry.Upgrade(e)
 	if err != nil {
 		_, _ = fmt.Fprintf(e.Writer(), "failed to upgrade registry: %v\n", err)
-		nonZeroExit(1)
+		cli.NonZeroExit(1)
 	}
 }
 
 func init() {
-	registryCmd.AddCommand(upgradeCmd)
+	rootCmd.AddCommand(upgradeCmd)
 }

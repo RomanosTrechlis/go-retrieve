@@ -29,6 +29,34 @@ func TestCSVToArray(t *testing.T) {
 	}
 }
 
+func TestMarshalIndent(t *testing.T) {
+	s := struct {
+		name string
+	}{
+		name: "Name",
+	}
+	_, err := util.MarshalIndent(s, false)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+
+	_, err = util.MarshalIndent(s, true)
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+}
+
+func TestLoadFile(t *testing.T) {
+	_, err := util.LoadFile("util.go")
+	if err != nil {
+		t.Fatalf("expected no error, got %v", err)
+	}
+	b, err := util.LoadFile("not_existing.txt")
+	if err == nil {
+		t.Fatalf("expected error, got %v", string(b))
+	}
+}
+
 func TestWriteFile(t *testing.T) {
 	testContent := struct {
 		field  string
@@ -37,11 +65,21 @@ func TestWriteFile(t *testing.T) {
 		field:  "test",
 		isTest: true,
 	}
+	defer os.RemoveAll("data")
+	defer os.RemoveAll("temp_data")
+
 	err := util.WriteFile("data", "test.json", testContent)
 	if err != nil {
 		t.Errorf("failed to write file: %v", err)
 	}
-	defer os.RemoveAll("data")
+	err = util.WriteFile("temp_data", "test.json", testContent)
+	if err != nil {
+		t.Errorf("failed to write file: %v", err)
+	}
+	err = util.WriteFile("temp_data", "test.yml", nil)
+	if err != nil {
+		t.Errorf("failed to write file: %v", err)
+	}
 }
 
 func TestContains(t *testing.T) {

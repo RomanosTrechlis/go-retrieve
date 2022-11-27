@@ -1,6 +1,8 @@
-package cli
+package main
 
 import (
+	"github.com/RomanosTrechlis/go-retrieve/cli"
+	"github.com/RomanosTrechlis/go-retrieve/env"
 	"github.com/spf13/cobra"
 )
 
@@ -17,20 +19,21 @@ or just copying resources from remote locations.
 
 First, run the 'init' command to create the required
 configuration files. Follow the steps of the wizard.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: rootFunc,
+	// show config file
+	Run: func(cmd *cobra.Command, args []string) {
+		e := env.DefaultConfigEnv(false)
+		cli.ExecuteConfig(e, false)
+	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
+// Execute adds all child cmd to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
-		nonZeroExit(1)
+		cli.NonZeroExit(1)
 	}
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolP("json", "j", false, "use this flag for json config files")
 }

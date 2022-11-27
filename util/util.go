@@ -13,7 +13,7 @@ import (
 // WriteFile creates a file with the given filename at the given
 // filePath containing the json data passed in the parameter.
 func WriteFile(filePath, filename string, data interface{}) error {
-	file, err := MarshalIndent(data, strings.HasSuffix(filename, "json"))
+	file, err := MarshalIndent(data, false)
 	if err != nil {
 		return err
 	}
