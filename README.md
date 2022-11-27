@@ -234,3 +234,5 @@ This project is distributed under the [MIT License](LICENSE)
 - [x] allow for specification of the directory for downloaded content
 - [ ] check for cyclical dependencies
 - [ ] add github actions
+- [ ] diff between files to download and local
+- [ ] destroy into config command

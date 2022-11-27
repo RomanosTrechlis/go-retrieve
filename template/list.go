@@ -21,7 +21,7 @@ func Definition(e *env.ConfigEnv, templateName string) (*registry.RegisteredTemp
 	}
 
 	for _, s := range c.Active.Sources {
-		templateFile := filepath.Join(e.ConfigPath(), s.Name+".json")
+		templateFile := filepath.Join(e.ConfigPath(), fmt.Sprintf("%s.%s", s.Name, e.Suffix()))
 		r, err := LoadRegistryFile(templateFile, e.IsJson())
 		if err != nil {
 			return nil, "", fmt.Errorf("failed to load registry file '%s': %v", templateFile, err)

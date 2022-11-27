@@ -24,9 +24,11 @@ type Registry struct {
 
 type RegisteredTemplate struct {
 	Name         string   `json:"name" yaml:"name"`
+	Description  string   `json:"description,omitempty" yaml:"description,omitempty"`
 	Url          string   `json:"url" yaml:"url"`
-	Dependencies []string `json:"dependencies" yaml:"dependencies"`
-	Commands     string   `json:"commands" yaml:"commands"`
+	Dependencies []string `json:"dependencies,omitempty" yaml:"dependencies,omitempty"`
+	Commands     string   `json:"cmd,omitempty" yaml:"cmd,omitempty"`
+	Destination  string   `json:"destination,omitempty" yaml:"destination,omitempty"`
 	Files        []string `json:"files" yaml:"files"`
 }
 

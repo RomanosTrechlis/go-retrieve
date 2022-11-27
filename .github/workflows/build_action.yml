@@ -36,8 +36,14 @@ jobs:
         run: |
           go test ./...
 
-      - name: Run build
+      - name: Run build rt
         run: |
           cd cmd/rt
           go build .
           cd ../..
+
+      - name: Run build rta
+          run: |
+            cd cmd/rta
+            go build .
+            cd ../..
