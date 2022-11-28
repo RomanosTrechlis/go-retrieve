@@ -37,7 +37,7 @@ active:
   sources:
     - name: registry
       url: <SOME URL>
-      token: ${GH_TOKEN}
+      token: <TOKEN_ENV_VAR_NAME>
 
 profiles:
   -
@@ -45,7 +45,7 @@ profiles:
     sources:
       - name: registry
         url: <SOME URL>
-        token: ${GH_TOKEN}
+        token: <TOKEN_ENV_VAR_NAME>
 ```
 
 or in json config files:
@@ -58,7 +58,7 @@ or in json config files:
       {
         "name": "github",
         "url": "<SOME URL>",
-        "token": "GH_TOKEN"
+        "token": "<TOKEN_ENV_VAR_NAME>"
       }
     ]
   },
@@ -69,7 +69,7 @@ or in json config files:
         {
           "name": "github",
           "url": "<SOME URL>",
-          "token": "GH_TOKEN"
+          "token": "<TOKEN_ENV_VAR_NAME>"
         }
       ]
     }

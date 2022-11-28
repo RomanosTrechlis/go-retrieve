@@ -21,4 +21,6 @@ Note: this applies to dependencies also.`)
 	//templateCmd.AddCommand(templateListCmd)
 	//templateListCmd.Flags().BoolP("dump", "d", false, "Dump profile configuration")
 	rootCmd.AddCommand(templateListCmd)
+	templateListCmd.Flags().BoolP("all", "a", false,
+		`List the registered templates of all the sources`)
 }

@@ -5,8 +5,6 @@ import (
 	"github.com/RomanosTrechlis/go-retrieve/dl"
 	"github.com/RomanosTrechlis/go-retrieve/env"
 	"github.com/RomanosTrechlis/go-retrieve/template"
-	"github.com/RomanosTrechlis/go-retrieve/util"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
 	"os"
 	"os/exec"
@@ -40,7 +38,7 @@ func get() func(cmd *cobra.Command, args []string) {
 		// default show template list
 		if len(args) == 0 {
 			e := env.DefaultConfigEnv(false)
-			executeTemplateList(e, false, false, args)
+			executeTemplateList(e, false)
 			return
 		}
 
@@ -53,33 +51,18 @@ func get() func(cmd *cobra.Command, args []string) {
 func list() func(cmd *cobra.Command, args []string) {
 	return func(cmd *cobra.Command, args []string) {
 		e := env.DefaultConfigEnv(false)
-		d, _ := cmd.Flags().GetBool("dump")
-		executeTemplateList(e, d, false, args)
+		a, _ := cmd.Flags().GetBool("all")
+		executeTemplateList(e, a)
 	}
 }
 
-func executeTemplateList(e *env.ConfigEnv, dump, isJson bool, args []string) {
-	if len(args) == 0 {
-		err := template.List(e)
-		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "failed to list template definitions: %v", err)
-			NonZeroExit(1)
-		}
-		return
-	}
-
-	t, _, err := template.Definition(e, args[0])
+func executeTemplateList(e *env.ConfigEnv, all bool) {
+	err := template.List(e, all)
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "failed to retrieve template definition: %v\n", err)
+		_, _ = fmt.Fprintf(os.Stderr, "failed to list template definitions: %v", err)
 		NonZeroExit(1)
 	}
-
-	if dump {
-		spew.Fdump(e.Writer(), t)
-		return
-	}
-	s, _ := util.MarshalIndent(t, isJson)
-	_, _ = fmt.Fprintln(e.Writer(), string(s))
+	return
 }
 
 func executeTemplate(e *env.ConfigEnv, destination, templateName string, isFlat bool) {

@@ -36,9 +36,26 @@ func Definition(e *env.ConfigEnv, templateName string) (*registry.RegisteredTemp
 	return nil, "", fmt.Errorf("template with name '%s' doesn't exist", templateName)
 }
 
-// List prints all the available templates defined in the configuration directory
-func List(e *env.ConfigEnv) error {
-	return filepath.Walk(e.ConfigPath(), templateWalk(e.ConfigName))
+// List prints active or all the available templates defined in the configuration directory
+func List(e *env.ConfigEnv, all bool) error {
+	if all {
+		return filepath.Walk(e.ConfigPath(), templateWalk(e.ConfigName))
+	}
+
+	c, err := config.LoadConfig(e)
+	if err != nil {
+		return err
+	}
+
+	for _, s := range c.Active.Sources {
+		p := filepath.Join(e.ConfigPath(), fmt.Sprintf("%s.%s", s.Name, e.Suffix()))
+		r, err := LoadRegistryFile(p, strings.HasSuffix(p, "json"))
+		if err != nil {
+			return err
+		}
+		templateSummaryPrint(r)
+	}
+	return nil
 }
 
 // LoadRegistryFile finds a specific registry and returns it
@@ -70,13 +87,18 @@ func templateWalk(configName string) func(innerPath string, info os.FileInfo, er
 			return fmt.Errorf("failed to load registry file '%s': %v", innerPath, err)
 		}
 
-		for i, t := range r.Templates {
-			fmt.Printf("%d/ %s", i+1, t.Name)
-			if t.Description != "" {
-				fmt.Printf(": %s", t.Description)
-			}
-			fmt.Println()
-		}
+		fmt.Printf("---------------- %s ----------------\n", r.Name)
+		templateSummaryPrint(r)
 		return nil
+	}
+}
+
+func templateSummaryPrint(r *registry.Registry) {
+	for i, t := range r.Templates {
+		fmt.Printf("%d/ %s", i+1, t.Name)
+		if t.Description != "" {
+			fmt.Printf(": %s", t.Description)
+		}
+		fmt.Println()
 	}
 }

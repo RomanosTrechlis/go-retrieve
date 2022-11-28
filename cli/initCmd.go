@@ -84,6 +84,7 @@ func executeInit(e *env.ConfigEnv, filename string, overwrite bool) {
 			_, _ = fmt.Fprintf(os.Stderr, "failed to re-initialize: %v\n", err)
 			NonZeroExit(1)
 		}
+		return
 	}
 
 	err := config.Init(e)
